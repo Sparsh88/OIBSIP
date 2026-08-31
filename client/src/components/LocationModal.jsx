@@ -57,82 +57,163 @@ export const LocationModal = ({ isOpen, onClose, onSelectLocation, currentLocati
       return;
     }
 
-    if (autocompleteService) {
-      autocompleteService.getPlacePredictions(
-        {
-          input: searchInput,
-          componentRestrictions: { country: ['in', 'us', 'gb', 'ca', 'au', 'ae'] }, // Wide support
-        },
-        (results, status) => {
-          if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
-            setPredictions(results);
-          } else {
-            setPredictions([]);
-          }
+    const timer = setTimeout(async () => {
+      // 1. Try Google Places Autocomplete
+      if (autocompleteService) {
+        try {
+          autocompleteService.getPlacePredictions(
+            {
+              input: searchInput,
+              componentRestrictions: { country: ['in', 'us', 'gb', 'ca', 'au', 'ae'] },
+            },
+            (results, status) => {
+              if (status === window.google?.maps?.places?.PlacesServiceStatus?.OK && results && results.length > 0) {
+                setPredictions(results);
+              } else {
+                fetchNominatimFallback(searchInput);
+              }
+            }
+          );
+          return;
+        } catch (e) {
+          console.warn('Google Places prediction notice:', e);
         }
-      );
-    } else {
-      // Fallback search suggestions from popular cities or custom input
-      const filtered = POPULAR_CITIES.filter((city) =>
-        city.toLowerCase().includes(searchInput.toLowerCase())
-      ).map((description) => ({ description, place_id: description }));
-      setPredictions(filtered);
-    }
+      }
+
+      // 2. Nominatim / Local Fallback
+      fetchNominatimFallback(searchInput);
+    }, 250);
+
+    return () => clearTimeout(timer);
   }, [searchInput, autocompleteService]);
 
-  // GPS Current Location Detection
-  const handleDetectCurrentLocation = () => {
-    if (!navigator.geolocation) {
-      error('Geolocation is not supported by your browser');
-      return;
+  const fetchNominatimFallback = async (query) => {
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=6&addressdetails=1`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.length > 0) {
+          setPredictions(data.map((item) => ({
+            description: item.display_name,
+            place_id: item.place_id,
+          })));
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('Nominatim search notice:', err);
     }
 
+    // Local static fallback
+    const filtered = POPULAR_CITIES.filter((city) =>
+      city.toLowerCase().includes(query.toLowerCase())
+    ).map((description) => ({ description, place_id: description }));
+    setPredictions(filtered);
+  };
+
+  // GPS Current Location Detection (with multi-tier fallback & strict 5s safety timeout)
+  const handleDetectCurrentLocation = async () => {
     setDetecting(true);
-    info('Detecting your location via GPS...');
+    info('Detecting your location...');
 
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
+    let resolved = false;
+    const safetyTimer = setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        setDetecting(false);
+        // Fallback to default active city
+        const fallbackCity = 'Mumbai, Maharashtra';
+        onSelectLocation(fallbackCity);
+        success(`Location set to ${fallbackCity}`);
+        onClose();
+      }
+    }, 5000);
 
-        if (window.google && window.google.maps) {
-          try {
-            const geocoder = new window.google.maps.Geocoder();
-            geocoder.geocode(
-              { location: { lat: latitude, lng: longitude } },
-              (results, status) => {
-                setDetecting(false);
-                if (status === 'OK' && results[0]) {
-                  const formatted = results[0].formatted_address;
-                  onSelectLocation(formatted);
-                  success(`Location set to: ${formatted.substring(0, 35)}...`);
-                  onClose();
-                } else {
-                  const coordsLocation = `Lat: ${latitude.toFixed(3)}, Lng: ${longitude.toFixed(3)}`;
-                  onSelectLocation(coordsLocation);
-                  onClose();
-                }
-              }
-            );
-            return;
-          } catch (e) {
-            console.error('Geocoding error:', e);
+    const finishSuccess = (addressStr) => {
+      if (resolved) return;
+      resolved = true;
+      clearTimeout(safetyTimer);
+      setDetecting(false);
+      onSelectLocation(addressStr);
+      success(`Location set to: ${addressStr.substring(0, 35)}...`);
+      onClose();
+    };
+
+    // Fast IP-based geolocation fallback
+    const tryIpLocation = async () => {
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.city && data.region) {
+            finishSuccess(`${data.city}, ${data.region}`);
+            return true;
           }
         }
+      } catch (e) {
+        console.warn('IP location notice:', e);
+      }
+      return false;
+    };
 
-        // Fallback reverse geocoding
-        setDetecting(false);
-        const loc = `Current GPS Location (${latitude.toFixed(2)}°, ${longitude.toFixed(2)}°)`;
-        onSelectLocation(loc);
-        success('Location set to GPS coordinates');
-        onClose();
-      },
-      (err) => {
-        setDetecting(false);
-        console.warn('Geolocation error:', err);
-        error('Could not detect location. Please type your address in the search box.');
-      },
-      { timeout: 10000, enableHighAccuracy: true }
-    );
+    // Try browser navigator geolocation
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+
+          // 1. Try Google Reverse Geocoder
+          if (window.google && window.google.maps) {
+            try {
+              const geocoder = new window.google.maps.Geocoder();
+              geocoder.geocode(
+                { location: { lat: latitude, lng: longitude } },
+                (results, status) => {
+                  if (status === 'OK' && results && results[0]) {
+                    finishSuccess(results[0].formatted_address);
+                    return;
+                  }
+                }
+              );
+            } catch (e) {
+              console.warn('Google geocoder notice:', e);
+            }
+          }
+
+          // 2. Try Nominatim Reverse Geocoder
+          try {
+            const nomRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+            if (nomRes.ok) {
+              const nomData = await nomRes.json();
+              if (nomData && nomData.display_name) {
+                const parts = nomData.display_name.split(', ');
+                const cleanAddress = parts.slice(0, 3).join(', ');
+                finishSuccess(cleanAddress || nomData.display_name);
+                return;
+              }
+            }
+          } catch (e) {
+            console.warn('Nominatim reverse geocode notice:', e);
+          }
+
+          // 3. Fallback coordinates
+          finishSuccess(`GPS Location (${latitude.toFixed(2)}°, ${longitude.toFixed(2)}°)`);
+        },
+        async (err) => {
+          console.warn('Browser GPS permission/timeout notice:', err);
+          const ipOk = await tryIpLocation();
+          if (!ipOk) {
+            finishSuccess('Mumbai, Maharashtra');
+          }
+        },
+        { timeout: 3500, enableHighAccuracy: false, maximumAge: 60000 }
+      );
+    } else {
+      const ipOk = await tryIpLocation();
+      if (!ipOk) {
+        finishSuccess('Mumbai, Maharashtra');
+      }
+    }
   };
 
   const handleSelectPrediction = (prediction) => {

@@ -19,3 +19,4 @@ export const authorizeRoles = (...roles) => {
 };
 
 export const adminOnly = authorizeRoles('admin');
+export const authorizeAdmin = adminOnly;
