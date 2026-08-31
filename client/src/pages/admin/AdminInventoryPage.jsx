@@ -16,6 +16,7 @@ import { useSocket } from '../../context/SocketContext';
 import { useToast } from '../../context/ToastContext';
 import { Loader } from '../../components/Loader';
 import { Modal } from '../../components/Modal';
+import { AdminNav } from '../../components/AdminNav';
 
 export const AdminInventoryPage = () => {
   const [inventory, setInventory] = useState([]);
@@ -142,22 +143,13 @@ export const AdminInventoryPage = () => {
 
   return (
     <div className="max-w-7xl" style={{ padding: '3rem 1.5rem 5rem' }}>
-      {/* Top Header */}
-      <div style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '2.5rem',
-        gap: '1rem',
-      }}>
-        <div>
-          <h1 style={{ fontSize: '2.4rem', fontWeight: '900' }}>Inventory Management</h1>
-          <p style={{ color: 'var(--text-secondary)' }}>
-            Real-time stock monitoring, automated deduction tracking & safety threshold controls.
-          </p>
-        </div>
+      {/* Admin Nav */}
+      <AdminNav
+        title="Stock & Ingredient Inventory"
+        subtitle="Real-time stock monitoring, automated deduction tracking & safety threshold controls."
+      />
 
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.5rem' }}>
         <button
           onClick={() => {
             setEditingItem(null);
@@ -172,9 +164,9 @@ export const AdminInventoryPage = () => {
             });
             setShowAddModal(true);
           }}
-          className="btn btn-primary"
+          className="btn btn-primary btn-sm"
         >
-          <Plus size={18} />
+          <Plus size={17} />
           <span>Add New Ingredient</span>
         </button>
       </div>

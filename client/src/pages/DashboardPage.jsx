@@ -64,6 +64,7 @@ export const DashboardPage = () => {
     subtotal,
     discountAmount,
     appliedCoupon,
+    availableCoupons,
     applyCoupon,
     removeCoupon,
     tax,
@@ -904,7 +905,7 @@ export const DashboardPage = () => {
             </h4>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              {AVAILABLE_COUPONS.map((coupon) => {
+              {(availableCoupons && availableCoupons.length > 0 ? availableCoupons : AVAILABLE_COUPONS).map((coupon) => {
                 const isCurrent = appliedCoupon?.code === coupon.code;
                 return (
                   <div

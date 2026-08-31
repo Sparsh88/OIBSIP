@@ -17,6 +17,7 @@ import API from '../../services/api';
 import { useSocket } from '../../context/SocketContext';
 import { useToast } from '../../context/ToastContext';
 import { Loader } from '../../components/Loader';
+import { AdminNav } from '../../components/AdminNav';
 
 export const AdminDashboardPage = () => {
   const [stats, setStats] = useState(null);
@@ -120,40 +121,10 @@ export const AdminDashboardPage = () => {
 
   return (
     <div className="max-w-7xl" style={{ padding: '3rem 1.5rem 5rem' }}>
-      {/* Top Admin Bar */}
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '1.5rem',
-          marginBottom: '2.5rem',
-        }}
-      >
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.25rem' }}>
-            <h1 style={{ fontSize: '2.2rem', fontWeight: '900', color: '#1F2937' }}>
-              Kitchen Command Center
-            </h1>
-            <span className="badge badge-special">Live Operations</span>
-          </div>
-          <p style={{ color: '#6B7280', fontSize: '0.95rem' }}>
-            Real-time kitchen dispatch pipeline & automated stock monitoring.
-          </p>
-        </div>
-
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-          <Link to="/admin/orders" className="btn btn-secondary btn-sm">
-            <ShoppingBag size={16} />
-            <span>Manage All Orders</span>
-          </Link>
-          <Link to="/admin/inventory" className="btn btn-primary btn-sm">
-            <Boxes size={16} />
-            <span>Ingredient Inventory</span>
-          </Link>
-        </div>
-      </div>
+      <AdminNav
+        title="Kitchen Command Center"
+        subtitle="Real-time kitchen dispatch pipeline, live sales metrics & automated stock monitoring."
+      />
 
       {/* KPI Cards Grid */}
       <div

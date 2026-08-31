@@ -23,6 +23,8 @@ import { AdminLoginPage } from './pages/admin/AdminLoginPage';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { AdminOrdersPage } from './pages/admin/AdminOrdersPage';
 import { AdminInventoryPage } from './pages/admin/AdminInventoryPage';
+import { AdminMenuPage } from './pages/admin/AdminMenuPage';
+import { AdminCouponsPage } from './pages/admin/AdminCouponsPage';
 
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { AdminRoute } from './routes/AdminRoute';
@@ -100,6 +102,22 @@ const AppLayout = () => {
             element={
               <AdminRoute>
                 <AdminOrdersPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/menu"
+            element={
+              <AdminRoute>
+                <AdminMenuPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/coupons"
+            element={
+              <AdminRoute>
+                <AdminCouponsPage />
               </AdminRoute>
             }
           />

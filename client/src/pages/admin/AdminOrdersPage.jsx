@@ -16,6 +16,7 @@ import { useSocket } from '../../context/SocketContext';
 import { useToast } from '../../context/ToastContext';
 import { Loader } from '../../components/Loader';
 import { Modal } from '../../components/Modal';
+import { AdminNav } from '../../components/AdminNav';
 
 export const AdminOrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -104,27 +105,10 @@ export const AdminOrdersPage = () => {
 
   return (
     <div className="max-w-7xl" style={{ padding: '3rem 1.5rem 5rem' }}>
-      {/* Header */}
-      <div style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '2.5rem',
-        gap: '1rem',
-      }}>
-        <div>
-          <h1 style={{ fontSize: '2.4rem', fontWeight: '900' }}>Live Order Management</h1>
-          <p style={{ color: 'var(--text-secondary)' }}>
-            Real-time kitchen order dispatch and status pipeline control.
-          </p>
-        </div>
-
-        <button onClick={fetchOrders} className="btn btn-secondary btn-sm">
-          <RefreshCw size={15} />
-          <span>Refresh Queue</span>
-        </button>
-      </div>
+      <AdminNav
+        title="Live Kitchen Order Dispatch"
+        subtitle="Real-time kitchen order dispatch and status pipeline control."
+      />
 
       {/* Toolbar: Filters & Search */}
       <div style={{

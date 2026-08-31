@@ -4,6 +4,7 @@ import { User } from '../models/User.js';
 import { Pizza } from '../models/Pizza.js';
 import { Inventory } from '../models/Inventory.js';
 import { Order } from '../models/Order.js';
+import { Coupon } from '../models/Coupon.js';
 
 dotenv.config();
 
@@ -609,6 +610,49 @@ const initialPizzas = [
   },
 ];
 
+const initialCoupons = [
+  {
+    code: 'BOGO2026',
+    title: 'Buy 1 Get 1 FREE',
+    tagline: 'WEEKEND SPECIAL',
+    description: 'Get 50% OFF on your entire order subtotal',
+    discountType: 'percentage',
+    discountValue: 50,
+    minOrder: 0,
+    isActive: true,
+  },
+  {
+    code: 'CUSTOM30',
+    title: 'Flat 30% OFF',
+    tagline: 'SPECIAL GOURMET OFFER',
+    description: 'Flat 30% OFF on artisan handcrafted pizzas',
+    discountType: 'percentage',
+    discountValue: 30,
+    minOrder: 0,
+    isActive: true,
+  },
+  {
+    code: 'FEAST499',
+    title: 'Feast Deal @ ₹499',
+    tagline: 'PARTY FEAST COMBO',
+    description: 'Flat ₹150 OFF on orders of ₹499 or more',
+    discountType: 'fixed',
+    discountValue: 150,
+    minOrder: 499,
+    isActive: true,
+  },
+  {
+    code: 'FREEBREAD',
+    title: 'Free Garlic Breadsticks',
+    tagline: 'WELCOME BONUS',
+    description: 'Enjoy ₹149 OFF (Free Garlic Breadsticks value)',
+    discountType: 'fixed',
+    discountValue: 149,
+    minOrder: 0,
+    isActive: true,
+  },
+];
+
 export const seedDatabase = async () => {
   try {
     console.log('[Seed] Connecting to MongoDB...');
@@ -621,6 +665,7 @@ export const seedDatabase = async () => {
     await Inventory.deleteMany({});
     await Pizza.deleteMany({});
     await Order.deleteMany({});
+    await Coupon.deleteMany({});
 
     // Seed Users
     console.log('[Seed] Creating Administrator account...');
@@ -638,6 +683,11 @@ export const seedDatabase = async () => {
     console.log('[Seed] Seeding exact catalog (1 Dessert, 4 Beverages, Extras, Sides, Pizzas)...');
     await Pizza.insertMany(initialPizzas);
     console.log(`[Seed] Created ${initialPizzas.length} items across all categories.`);
+
+    // Seed Coupons
+    console.log('[Seed] Seeding active promotional coupons...');
+    await Coupon.insertMany(initialCoupons);
+    console.log(`[Seed] Created ${initialCoupons.length} promotional coupons.`);
 
     console.log('\n======================================================');
     console.log('✅ DATABASE SEEDING COMPLETED SUCCESSFULLY!');

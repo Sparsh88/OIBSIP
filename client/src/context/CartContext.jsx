@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import API from '../services/api';
 
 const CartContext = createContext(null);
 
-export const AVAILABLE_COUPONS = [
+export const DEFAULT_COUPONS = [
   {
     code: 'BOGO2026',
     title: 'Buy 1 Get 1 FREE',
@@ -10,6 +11,8 @@ export const AVAILABLE_COUPONS = [
     description: 'Get 50% OFF on your entire order subtotal',
     discountType: 'percentage',
     discountValue: 50,
+    minOrder: 0,
+    isActive: true,
   },
   {
     code: 'CUSTOM30',
@@ -18,6 +21,8 @@ export const AVAILABLE_COUPONS = [
     description: 'Flat 30% OFF on artisan handcrafted pizzas',
     discountType: 'percentage',
     discountValue: 30,
+    minOrder: 0,
+    isActive: true,
   },
   {
     code: 'FEAST499',
@@ -27,6 +32,7 @@ export const AVAILABLE_COUPONS = [
     discountType: 'fixed',
     discountValue: 150,
     minOrder: 499,
+    isActive: true,
   },
   {
     code: 'FREEBREAD',
@@ -35,10 +41,15 @@ export const AVAILABLE_COUPONS = [
     description: 'Enjoy ₹149 OFF (Free Garlic Breadsticks value)',
     discountType: 'fixed',
     discountValue: 149,
+    minOrder: 0,
+    isActive: true,
   },
 ];
 
+export const AVAILABLE_COUPONS = DEFAULT_COUPONS;
+
 export const CartProvider = ({ children }) => {
+  const [couponsList, setCouponsList] = useState(DEFAULT_COUPONS);
   const [cartItems, setCartItems] = useState(() => {
     try {
       const saved = localStorage.getItem('pizzanest_cart') || localStorage.getItem('pizzaro_cart');
@@ -56,6 +67,22 @@ export const CartProvider = ({ children }) => {
       return null;
     }
   });
+
+  // Fetch active coupons from API
+  useEffect(() => {
+    const fetchActiveCoupons = async () => {
+      try {
+        const data = await API.get('/coupons');
+        if (data.coupons && data.coupons.length > 0) {
+          setCouponsList(data.coupons);
+        }
+      } catch (err) {
+        console.warn('Could not load dynamic coupons, using fallback presets:', err);
+      }
+    };
+
+    fetchActiveCoupons();
+  }, []);
 
   // Sync cart to local storage
   useEffect(() => {
@@ -82,90 +109,66 @@ export const CartProvider = ({ children }) => {
   const addToCart = (newItem) => {
     setCartItems((prev) => {
       const existingIndex = prev.findIndex((item) => {
-        return (
-          item.name === newItem.name &&
-          item.customBase === newItem.customBase &&
-          item.customSauce === newItem.customSauce &&
-          item.customCheese === newItem.customCheese &&
-          JSON.stringify(item.customVeggies?.sort()) === JSON.stringify(newItem.customVeggies?.sort())
-        );
+        const sameId = item._id === newItem._id;
+        const sameSize = item.size === newItem.size;
+        const sameCrust = item.crust === newItem.crust;
+        const sameCustom = JSON.stringify(item.customization || {}) === JSON.stringify(newItem.customization || {});
+        return sameId && sameSize && sameCrust && sameCustom;
       });
 
       if (existingIndex > -1) {
         const updated = [...prev];
-        const newQty = updated[existingIndex].quantity + (newItem.quantity || 1);
+        const exist = updated[existingIndex];
+        const nextQty = (exist.quantity || 1) + (newItem.quantity || 1);
+        const unitPrice = exist.unitPrice || exist.price || 0;
         updated[existingIndex] = {
-          ...updated[existingIndex],
-          quantity: newQty,
-          totalPrice: updated[existingIndex].unitPrice * newQty,
+          ...exist,
+          quantity: nextQty,
+          totalPrice: unitPrice * nextQty,
         };
         return updated;
       }
 
+      const qty = newItem.quantity || 1;
+      const unitPrice = newItem.unitPrice || newItem.price || newItem.basePrice || 0;
       return [
         ...prev,
         {
           ...newItem,
-          quantity: newItem.quantity || 1,
-          totalPrice: (newItem.unitPrice || 299) * (newItem.quantity || 1),
+          quantity: qty,
+          unitPrice,
+          totalPrice: unitPrice * qty,
         },
       ];
     });
   };
 
-  const resolveItemIndex = (target, items) => {
-    if (typeof target === 'number') {
-      return target >= 0 && target < items.length ? target : -1;
-    }
-    if (typeof target === 'string') {
-      return items.findIndex((item) => item._id === target || item.name === target);
-    }
-    if (target && typeof target === 'object') {
-      return items.findIndex(
-        (item) =>
-          item === target ||
-          (item._id && item._id === target._id) ||
-          item.name === target.name
-      );
-    }
-    return -1;
-  };
-
-  const removeFromCart = (target) => {
+  const removeFromCart = (indexOrItem) => {
     setCartItems((prev) => {
-      const idx = resolveItemIndex(target, prev);
-      if (idx === -1) return prev;
-      return prev.filter((_, i) => i !== idx);
+      if (typeof indexOrItem === 'number') {
+        return prev.filter((_, idx) => idx !== indexOrItem);
+      }
+      return prev.filter((item) => item !== indexOrItem && item._id !== indexOrItem._id);
     });
   };
 
-  const updateQuantity = (target, change) => {
+  const updateQuantity = (index, deltaOrExact, isExact = false) => {
     setCartItems((prev) => {
-      const idx = resolveItemIndex(target, prev);
-      if (idx === -1) return prev;
-
+      if (!prev[index]) return prev;
       const updated = [...prev];
-      const current = updated[idx];
+      const currentItem = updated[index];
+      const nextQty = isExact ? deltaOrExact : (currentItem.quantity || 1) + deltaOrExact;
 
-      let newQty;
-      // If change is -1 or +1 (relative delta)
-      if (change === 1 || change === -1) {
-        newQty = current.quantity + change;
-      } else if (typeof change === 'number') {
-        // If change is target absolute value (e.g. current.quantity - 1)
-        newQty = change;
-      } else {
-        newQty = current.quantity + 1;
+      if (nextQty <= 0) {
+        return prev.filter((_, idx) => idx !== index);
       }
 
-      if (newQty <= 0) {
-        return updated.filter((_, i) => i !== idx);
-      }
-
-      updated[idx] = {
-        ...current,
-        quantity: newQty,
-        totalPrice: current.unitPrice * newQty,
+      const unitPrice = currentItem.unitPrice || currentItem.price || currentItem.basePrice || (currentItem.totalPrice / (currentItem.quantity || 1));
+      updated[index] = {
+        ...currentItem,
+        quantity: nextQty,
+        unitPrice,
+        totalPrice: unitPrice * nextQty,
       };
       return updated;
     });
@@ -184,15 +187,17 @@ export const CartProvider = ({ children }) => {
   // Calculate discount amount based on applied coupon
   let discountAmount = 0;
   if (appliedCoupon && subtotal > 0) {
-    const code = appliedCoupon.code?.toUpperCase();
-    if (code === 'BOGO2026') {
-      discountAmount = Math.round(subtotal * 0.5); // 50% OFF
-    } else if (code === 'CUSTOM30') {
-      discountAmount = Math.round(subtotal * 0.3); // 30% OFF
-    } else if (code === 'FEAST499') {
-      discountAmount = subtotal >= 499 ? 150 : Math.min(subtotal, 100); // ₹150 OFF
-    } else if (code === 'FREEBREAD') {
-      discountAmount = Math.min(subtotal, 149); // ₹149 OFF
+    const minReq = Number(appliedCoupon.minOrder) || 0;
+    if (minReq > 0 && subtotal < minReq) {
+      discountAmount = 0; // Subtotal below minimum order required
+    } else if (appliedCoupon.discountType === 'percentage') {
+      const calculated = Math.round((subtotal * Number(appliedCoupon.discountValue || 0)) / 100);
+      discountAmount = appliedCoupon.maxDiscount
+        ? Math.min(calculated, Number(appliedCoupon.maxDiscount))
+        : calculated;
+    } else {
+      // Fixed discount amount
+      discountAmount = Math.min(subtotal, Number(appliedCoupon.discountValue || 0));
     }
   }
 
@@ -209,12 +214,20 @@ export const CartProvider = ({ children }) => {
     }
 
     const code = rawCode.trim().toUpperCase();
-    const found = AVAILABLE_COUPONS.find((c) => c.code === code);
+    const found = couponsList.find((c) => c.code === code && c.isActive !== false);
 
     if (!found) {
       return {
         success: false,
-        message: `Coupon "${code}" is invalid or expired. Try BOGO2026, CUSTOM30, FEAST499, or FREEBREAD.`,
+        message: `Coupon "${code}" is invalid, inactive, or expired.`,
+      };
+    }
+
+    const minReq = Number(found.minOrder) || 0;
+    if (minReq > 0 && subtotal < minReq) {
+      return {
+        success: false,
+        message: `Coupon "${found.code}" requires a minimum order of ₹${minReq}. Add ₹${minReq - subtotal} more!`,
       };
     }
 
@@ -222,7 +235,7 @@ export const CartProvider = ({ children }) => {
     return {
       success: true,
       coupon: found,
-      message: `Coupon "${found.code}" applied! You saved with ${found.title}.`,
+      message: `Coupon "${found.code}" applied successfully! You saved with ${found.title}.`,
     };
   };
 
@@ -235,6 +248,7 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         cartItems,
+        availableCoupons: couponsList,
         addToCart,
         removeFromCart,
         updateQuantity,
