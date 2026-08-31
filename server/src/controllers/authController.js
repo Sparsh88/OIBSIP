@@ -112,14 +112,6 @@ export const loginUser = async (req, res, next) => {
       });
     }
 
-    // Strictly block Administrator accounts from Customer login portal
-    if (user.role === 'admin') {
-      return res.status(403).json({
-        success: false,
-        message: 'Access Denied: This account is an Administrator. Please log in via the dedicated Admin Portal.',
-      });
-    }
-
     const isMatch = await user.matchPassword(cleanPassword);
     if (!isMatch) {
       return res.status(401).json({
