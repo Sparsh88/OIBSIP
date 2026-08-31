@@ -245,5 +245,5 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 
-## 📄 License
-This project is licensed under the **ISC License** — developed for educational and internship demonstration purposes.
+## 📄 License & Attribution
+This project is licensed under the **ISC License** — developed and submitted by **Sparsh Chauhan** exclusively for the **OASIS INFOBYTE Web Development & Designing Internship (Level 3 — Task 1)**. All rights reserved for internship evaluation and academic presentation purposes.
