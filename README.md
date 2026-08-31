@@ -241,7 +241,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 - **Student / Developer**: **Sparsh Chauhan**
 - **Internship**: **OASIS INFOBYTE Web Development & Designing Internship**
 - **Task**: **Level 3 — Task 1: Pizza Delivery Full-Stack Application**
-- **Submission Date**: August 2026
+- **Submission Date**: October 2026
 
 ---
 
