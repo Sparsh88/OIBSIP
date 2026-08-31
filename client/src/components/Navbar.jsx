@@ -270,25 +270,6 @@ export const Navbar = () => {
             )}
           </Link>
 
-          {/* Admin Operations Shield */}
-          <Link
-            to={isAdmin ? '/admin/dashboard' : '/admin/login'}
-            style={{
-              color: isAdmin ? '#C8102E' : '#6B7280',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              background: isAdmin ? '#FFF0F2' : '#F9FAFB',
-              border: `1px solid ${isAdmin ? '#C8102E' : '#E5E7EB'}`,
-            }}
-            title="Admin Operations Portal"
-          >
-            <Shield size={18} />
-          </Link>
-
           {/* Deep Forest Green Rounded Button (Papa John's Sign Up Style) */}
           {isAuthenticated ? (
             <div style={{ position: 'relative' }}>
