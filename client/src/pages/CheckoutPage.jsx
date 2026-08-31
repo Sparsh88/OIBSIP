@@ -24,11 +24,11 @@ export const CheckoutPage = () => {
   const navigate = useNavigate();
 
   const [address, setAddress] = useState({
-    street: user?.address?.street || 'Flat 402, Sunshine Heights, Bandra West',
-    city: user?.address?.city || 'Mumbai',
-    state: user?.address?.state || 'Maharashtra',
-    zipCode: user?.address?.zipCode || '400050',
-    phone: user?.phone || '+91 91234 56789',
+    street: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    phone: '',
   });
 
   const [notes, setNotes] = useState('');
