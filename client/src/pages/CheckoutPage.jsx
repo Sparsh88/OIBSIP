@@ -227,26 +227,32 @@ export const CheckoutPage = () => {
                 </h3>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
-                <div className="form-group">
-                  <label className="form-label" style={{ fontSize: '0.85rem' }}>
-                    Street Address / House No. *
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                {/* Street Address */}
+                <div>
+                  <label className="form-label" style={{ fontSize: '0.88rem', fontWeight: '800', color: '#1F2937', marginBottom: '0.4rem' }}>
+                    Street Address / House No. <span style={{ color: '#C8102E' }}>*</span>
                   </label>
-                  <input
-                    type="text"
-                    name="street"
-                    value={address.street}
-                    onChange={handleAddressChange}
-                    placeholder="e.g. 501 Cyber Hub, Executive Office"
-                    className="form-control"
-                    required
-                  />
+                  <div style={{ position: 'relative' }}>
+                    <MapPin size={17} color="#9CA3AF" style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)' }} />
+                    <input
+                      type="text"
+                      name="street"
+                      value={address.street}
+                      onChange={handleAddressChange}
+                      placeholder="e.g. Flat 402, Sunshine Heights, Bandra West"
+                      className="form-input"
+                      style={{ paddingLeft: '42px', height: '46px', fontSize: '0.92rem' }}
+                      required
+                    />
+                  </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                  <div className="form-group">
-                    <label className="form-label" style={{ fontSize: '0.85rem' }}>
-                      City *
+                {/* City & State Grid */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.88rem', fontWeight: '800', color: '#1F2937', marginBottom: '0.4rem' }}>
+                      City <span style={{ color: '#C8102E' }}>*</span>
                     </label>
                     <input
                       type="text"
@@ -254,13 +260,14 @@ export const CheckoutPage = () => {
                       value={address.city}
                       onChange={handleAddressChange}
                       placeholder="e.g. Mumbai"
-                      className="form-control"
+                      className="form-input"
+                      style={{ height: '46px', fontSize: '0.92rem' }}
                       required
                     />
                   </div>
-                  <div className="form-group">
-                    <label className="form-label" style={{ fontSize: '0.85rem' }}>
-                      State *
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.88rem', fontWeight: '800', color: '#1F2937', marginBottom: '0.4rem' }}>
+                      State <span style={{ color: '#C8102E' }}>*</span>
                     </label>
                     <input
                       type="text"
@@ -268,16 +275,18 @@ export const CheckoutPage = () => {
                       value={address.state}
                       onChange={handleAddressChange}
                       placeholder="e.g. Maharashtra"
-                      className="form-control"
+                      className="form-input"
+                      style={{ height: '46px', fontSize: '0.92rem' }}
                       required
                     />
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                  <div className="form-group">
-                    <label className="form-label" style={{ fontSize: '0.85rem' }}>
-                      Pincode / Zip Code *
+                {/* Pincode & Phone Grid */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.88rem', fontWeight: '800', color: '#1F2937', marginBottom: '0.4rem' }}>
+                      Pincode / Zip Code <span style={{ color: '#C8102E' }}>*</span>
                     </label>
                     <input
                       type="text"
@@ -285,36 +294,43 @@ export const CheckoutPage = () => {
                       value={address.zipCode}
                       onChange={handleAddressChange}
                       placeholder="e.g. 400050"
-                      className="form-control"
+                      className="form-input"
+                      style={{ height: '46px', fontSize: '0.92rem' }}
                       required
                     />
                   </div>
-                  <div className="form-group">
-                    <label className="form-label" style={{ fontSize: '0.85rem' }}>
-                      Contact Phone *
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.88rem', fontWeight: '800', color: '#1F2937', marginBottom: '0.4rem' }}>
+                      Contact Phone <span style={{ color: '#C8102E' }}>*</span>
                     </label>
-                    <input
-                      type="text"
-                      name="phone"
-                      value={address.phone}
-                      onChange={handleAddressChange}
-                      placeholder="e.g. +91 91234 56789"
-                      className="form-control"
-                      required
-                    />
+                    <div style={{ position: 'relative' }}>
+                      <Phone size={17} color="#9CA3AF" style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)' }} />
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={address.phone}
+                        onChange={handleAddressChange}
+                        placeholder="e.g. +91 98765 43210"
+                        className="form-input"
+                        style={{ paddingLeft: '42px', height: '46px', fontSize: '0.92rem' }}
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <div className="form-group">
-                  <label className="form-label" style={{ fontSize: '0.85rem' }}>
-                    Kitchen / Delivery Instructions
+                {/* Kitchen / Delivery Instructions */}
+                <div>
+                  <label className="form-label" style={{ fontSize: '0.88rem', fontWeight: '800', color: '#1F2937', marginBottom: '0.4rem' }}>
+                    Kitchen / Delivery Instructions (Optional)
                   </label>
                   <input
                     type="text"
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    placeholder="e.g. Ring the doorbell, leave extra oregano packets"
-                    className="form-control"
+                    placeholder="e.g. Ring the doorbell, leave extra seasoning and oregano packets"
+                    className="form-input"
+                    style={{ height: '46px', fontSize: '0.92rem' }}
                   />
                 </div>
               </div>
