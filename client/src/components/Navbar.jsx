@@ -23,7 +23,7 @@ export const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(() => {
-    return localStorage.getItem('pizzanest_location') || 'Mumbai, Maharashtra';
+    return localStorage.getItem('pizzanest_location') || '';
   });
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -160,20 +160,20 @@ export const Navbar = () => {
               maxWidth: '260px',
             }}
             onClick={() => setShowLocationModal(true)}
-            title={`Delivery Location: ${selectedLocation}`}
+            title={selectedLocation ? `Delivery Location: ${selectedLocation}` : 'Select Delivery Location'}
           >
             <MapPin size={16} color="#C8102E" style={{ flexShrink: 0 }} />
             <span
               style={{
                 fontSize: '0.85rem',
-                fontWeight: '800',
-                color: '#1F2937',
+                fontWeight: selectedLocation ? '800' : '600',
+                color: selectedLocation ? '#1F2937' : '#6B7280',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
               }}
             >
-              {selectedLocation}
+              {selectedLocation || 'Select Delivery Location'}
             </span>
             <ChevronDown size={14} color="#9CA3AF" style={{ flexShrink: 0 }} />
           </div>
@@ -458,17 +458,17 @@ export const Navbar = () => {
               setShowLocationModal(true);
             }}
             style={{
-              fontSize: '1rem',
-              fontWeight: '800',
-              color: '#C8102E',
+              fontSize: '0.95rem',
+              fontWeight: selectedLocation ? '800' : '600',
+              color: selectedLocation ? '#C8102E' : '#6B7280',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               gap: '0.45rem',
             }}
           >
-            <MapPin size={18} />
-            <span>📍 {selectedLocation}</span>
+            <MapPin size={18} color="#C8102E" />
+            <span>{selectedLocation ? `📍 ${selectedLocation}` : '📍 Select Delivery Location'}</span>
           </div>
 
           {isAuthenticated && (
