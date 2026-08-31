@@ -15,18 +15,26 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { LocationModal } from './LocationModal';
 
 export const Navbar = () => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const { totalItemCount } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState('');
-  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState(() => {
+    return localStorage.getItem('pizzanest_location') || 'Mumbai, Maharashtra';
+  });
+  const [showLocationModal, setShowLocationModal] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handleSelectLocation = (newLoc) => {
+    setSelectedLocation(newLoc);
+    localStorage.setItem('pizzanest_location', newLoc);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -140,7 +148,7 @@ export const Navbar = () => {
           }}
           className="desktop-nav"
         >
-          {/* Location Selector */}
+          {/* Location Selector Trigger */}
           <div
             style={{
               display: 'flex',
@@ -149,74 +157,29 @@ export const Navbar = () => {
               cursor: 'pointer',
               paddingRight: '0.85rem',
               borderRight: '1.5px solid #E5E7EB',
+              maxWidth: '260px',
             }}
-            onClick={() => setShowLocationDropdown(!showLocationDropdown)}
+            onClick={() => setShowLocationModal(true)}
+            title={`Delivery Location: ${selectedLocation}`}
           >
-            <MapPin size={16} color="#C8102E" />
+            <MapPin size={16} color="#C8102E" style={{ flexShrink: 0 }} />
             <span
               style={{
                 fontSize: '0.85rem',
-                fontWeight: selectedLocation ? '800' : '600',
-                color: selectedLocation ? '#1F2937' : '#6B7280',
+                fontWeight: '800',
+                color: '#1F2937',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
             >
-              {selectedLocation || 'Select Delivery Location'}
+              {selectedLocation}
             </span>
-            <ChevronDown size={14} color="#9CA3AF" />
+            <ChevronDown size={14} color="#9CA3AF" style={{ flexShrink: 0 }} />
           </div>
 
-          {/* Location Dropdown Modal */}
-          {showLocationDropdown && (
-            <div
-              style={{
-                position: 'absolute',
-                top: '115%',
-                left: 0,
-                width: '260px',
-                background: '#FFFFFF',
-                border: '1px solid #E5E7EB',
-                borderRadius: 'var(--radius-md)',
-                boxShadow: 'var(--shadow-lg)',
-                padding: '0.5rem',
-                zIndex: 200,
-              }}
-            >
-              <p
-                style={{
-                  fontSize: '0.75rem',
-                  fontWeight: '800',
-                  color: '#9CA3AF',
-                  padding: '0.4rem 0.6rem',
-                  textTransform: 'uppercase',
-                }}
-              >
-                Select Delivery Location
-              </p>
-              {locations.map((loc) => (
-                <div
-                  key={loc}
-                  onClick={() => {
-                    setSelectedLocation(loc);
-                    setShowLocationDropdown(false);
-                  }}
-                  style={{
-                    padding: '0.5rem 0.6rem',
-                    fontSize: '0.85rem',
-                    fontWeight: selectedLocation === loc ? '800' : '500',
-                    color: selectedLocation === loc ? '#C8102E' : '#1F2937',
-                    background: selectedLocation === loc ? '#FFF0F2' : 'transparent',
-                    borderRadius: 'var(--radius-sm)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {loc}
-                </div>
-              ))}
-            </div>
-          )}
-
           {/* Order Now Time Indicator */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexShrink: 0 }}>
             <Clock size={16} color="#6B7280" />
             <span style={{ fontSize: '0.82rem', fontWeight: '700', color: '#6B7280' }}>
               Order Now (25 Mins)
@@ -489,6 +452,25 @@ export const Navbar = () => {
           >
             🎁 PizzaNest Rewards & Deals
           </a>
+          <div
+            onClick={() => {
+              setMobileMenuOpen(false);
+              setShowLocationModal(true);
+            }}
+            style={{
+              fontSize: '1rem',
+              fontWeight: '800',
+              color: '#C8102E',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+            }}
+          >
+            <MapPin size={18} />
+            <span>📍 {selectedLocation}</span>
+          </div>
+
           {isAuthenticated && (
             <Link
               to="/orders"
@@ -500,6 +482,14 @@ export const Navbar = () => {
           )}
         </div>
       )}
+
+      {/* Global Location Selection Modal (Google Places & GPS) */}
+      <LocationModal
+        isOpen={showLocationModal}
+        onClose={() => setShowLocationModal(false)}
+        onSelectLocation={handleSelectLocation}
+        currentLocation={selectedLocation}
+      />
     </header>
   );
 };
