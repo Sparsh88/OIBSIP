@@ -1,0 +1,268 @@
+/* ==========================================================================
+   PIZZANEST — PAPA JOHN'S INDIA INSPIRED LIGHT THEME DESIGN SYSTEM
+   ========================================================================== */
+
+:root {
+  /* Core Palette */
+  --primary: #C8102E;           /* Fresh Brand Pizza Red */
+  --primary-hover: #A00C24;     /* Deep Red */
+  --primary-light: #FFF0F2;     /* Warm Soft Red Tint */
+  --primary-glow: rgba(200, 16, 46, 0.25);
+
+  --secondary: #E25822;         /* Warm Tomato / Spiced Orange */
+  --secondary-hover: #C54413;
+  --secondary-light: #FFF4EE;
+
+  --accent-green: #1E3F20;      /* Deep Forest Green (Papa John's) */
+  --accent-green-hover: #152C16;
+  --accent-green-light: #F0FDF4;
+
+  --bg-page: #FFFDF9;           /* Clean Soft Warm White / Cream */
+  --bg-card: #FFFFFF;           /* Crisp Pure White */
+  --bg-elevated: #F9FAFB;       /* Subtle Off-White / Light Gray */
+
+  --text-primary: #1F2937;      /* Dark Charcoal (High Readability) */
+  --text-secondary: #4B5563;    /* Balanced Slate Gray */
+  --text-muted: #9CA3AF;        /* Soft Caption Gray */
+
+  --border-subtle: #E5E7EB;     /* Clean Card & Divider Border */
+  --border-active: #C8102E;
+
+  /* Typography */
+  --font-display: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-primary: 0 8px 24px rgba(200, 16, 46, 0.2);
+
+  /* Border Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Document Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Subtle food wallpaper watermark pattern on main container */
+.pizzanest-watermark-bg {
+  background-color: #FFFDF9;
+  background-image: radial-gradient(#F3E8E8 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Autofill Overrides */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-primary) !important;
+  -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset !important;
+  box-shadow: 0 0 0px 1000px #FFFFFF inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Typography Hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Container Utilities */
+.max-w-7xl {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.max-w-5xl {
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius-full);
+  font-weight: 800;
+  font-size: 0.92rem;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  font-family: var(--font-display);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-primary);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(200, 16, 46, 0.35);
+}
+
+.btn-secondary {
+  background: #FFFFFF;
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-elevated);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.btn-green {
+  background: var(--accent-green);
+  color: #FFFFFF;
+}
+
+.btn-green:hover {
+  background: var(--accent-green-hover);
+  transform: translateY(-2px);
+}
+
+.btn-lg {
+  padding: 0.85rem 1.8rem;
+  font-size: 1rem;
+}
+
+.btn-sm {
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(200, 16, 46, 0.3);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.badge-veg {
+  background: var(--accent-green-light);
+  color: var(--accent-green);
+  border: 1px solid rgba(30, 63, 32, 0.2);
+}
+
+.badge-nonveg {
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid rgba(200, 16, 46, 0.2);
+}
+
+.badge-special {
+  background: #FFF7ED;
+  color: #C2410C;
+  border: 1px solid rgba(194, 65, 12, 0.2);
+}
+
+/* Form Controls */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-subtle);
+  background: #FFFFFF;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all var(--transition-fast);
+  outline: none;
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.12);
+}
+
+/* Responsive Navigation Bar visibility */
+@media (max-width: 860px) {
+  .desktop-nav {
+    display: none !important;
+  }
+}
