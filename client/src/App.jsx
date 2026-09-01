@@ -7,7 +7,6 @@ import { SocketProvider } from './context/SocketContext';
 
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import { Preloader } from './components/Preloader';
 
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
@@ -35,7 +34,6 @@ const AppLayout = () => {
 
   return (
     <div className="app-container">
-      <Preloader />
       <Navbar />
       <main
         className="main-content"
