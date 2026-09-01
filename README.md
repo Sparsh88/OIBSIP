@@ -161,8 +161,8 @@ CLIENT_URL=http://localhost:5173
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/pizza_delivery_db?retryWrites=true&w=majority
 JWT_SECRET=pizzanest_super_secret_jwt_key_level3_2026
 JWT_EXPIRES_IN=36500d
-ADMIN_EMAIL=sparshchauhan050@gmail.com
-ADMIN_INITIAL_PASSWORD=Sp@080806
+ADMIN_EMAIL=admin@pizzanest.com
+ADMIN_INITIAL_PASSWORD=your_secure_admin_password_here
 RAZORPAY_KEY_ID=rzp_test_YourTestKeyIdHere
 RAZORPAY_KEY_SECRET=YourRazorpaySecretKeyHere
 EMAIL_HOST=smtp.gmail.com
@@ -206,7 +206,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 | Role | Email | Password | Portal |
 | :--- | :--- | :--- | :--- |
-| **👑 Master Administrator** | `sparshchauhan050@gmail.com` | `Sp@080806` | `/admin/login` |
+| **👑 Master Administrator** | `admin@pizzanest.com` | Defined in `server/.env` (`ADMIN_INITIAL_PASSWORD`) | `/admin/login` |
 | **👤 Demo Customer** | `user@pizzanest.com` | `User@123456` | `/login` |
 
 ---

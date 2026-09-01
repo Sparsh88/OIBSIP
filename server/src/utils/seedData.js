@@ -10,10 +10,10 @@ dotenv.config();
 
 const MONGO_URI =
   process.env.MONGO_URI ||
-  'mongodb+srv://sparshchauhan:sparsh12@cluster0.00t8w7f.mongodb.net/pizza_delivery_db?retryWrites=true&w=majority';
+  'mongodb://127.0.0.1:27017/pizza_delivery_db';
 
-const adminEmail = process.env.ADMIN_EMAIL || 'sparshchauhan050@gmail.com';
-const adminPassword = process.env.ADMIN_INITIAL_PASSWORD || 'Sp@080806';
+const adminEmail = process.env.ADMIN_EMAIL || 'admin@pizzanest.com';
+const adminPassword = process.env.ADMIN_INITIAL_PASSWORD || 'AdminSecretPass123!';
 
 const initialUsers = [
   {

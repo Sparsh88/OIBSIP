@@ -4,7 +4,7 @@ export const connectDB = async () => {
   try {
     const conn = await mongoose.connect(
       process.env.MONGO_URI ||
-        'mongodb+srv://sparshchauhan:sparsh12@cluster0.00t8w7f.mongodb.net/pizza_delivery_db?retryWrites=true&w=majority'
+        'mongodb://127.0.0.1:27017/pizza_delivery_db'
     );
     console.log(`[MongoDB] Connected successfully to host: ${conn.connection.host}, database: ${conn.connection.name}`);
   } catch (error) {
