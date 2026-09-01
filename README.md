@@ -169,8 +169,6 @@ CLIENT_URL=http://localhost:5173
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/pizza_delivery_db?retryWrites=true&w=majority
 JWT_SECRET=pizzanest_super_secret_jwt_key_level3_2026
 JWT_EXPIRES_IN=36500d
-ADMIN_EMAIL=admin@pizzanest.com
-ADMIN_INITIAL_PASSWORD=your_secure_admin_password_here
 RAZORPAY_KEY_ID=rzp_test_YourTestKeyIdHere
 RAZORPAY_KEY_SECRET=YourRazorpaySecretKeyHere
 EMAIL_HOST=smtp.gmail.com
@@ -205,19 +203,6 @@ npm run dev
 cd client
 npm run dev
 ```
-
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
----
-
-## 🔐 Credentials Configuration
-
-| Role | Email | Password | Access Portal |
-| :--- | :--- | :--- | :--- |
-| **👑 Master Administrator** | Configured in `server/.env` (`ADMIN_EMAIL`) | Configured in `server/.env` (`ADMIN_INITIAL_PASSWORD`) | `/admin/login` |
-| **👤 Demo Customer** | `user@pizzanest.com` | `User@123456` | `/login` |
-
-*Note: Real database credentials and master admin passwords are stored in private `.env` files and are never exposed in documentation.*
 
 ---
 
