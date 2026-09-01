@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "OASIS INFOBYTE Level 3 - Pizza Delivery Full-Stack Application",
   "scripts": {
+    "start": "node server/src/server.js",
+    "build": "npm install --prefix server",
     "install-all": "npm install --prefix server && npm install --prefix client",
     "seed": "npm run seed --prefix server",
     "server": "npm run dev --prefix server",
