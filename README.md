@@ -9,10 +9,18 @@
 
 ---
 
-## 📌 Project Overview
-**PizzaNest** is a full-stack pizza ordering, live kitchen dispatch, real-time tracking, and automated inventory management web application developed as part of the **OASIS INFOBYTE Web Development & Designing Internship (Level 3 — Task 1)**.
+## 🌐 Live Deployments & Repository Links
 
-The project features a **Customer Ordering Portal** paired with a **Master Administrator Dashboard**, connected in real time via **WebSockets (Socket.IO)** and protected with **JWT Authentication** and **Role-Based Access Control (RBAC)**.
+- **🚀 Live Frontend Web App (Vercel)**: [https://oibsip-client.vercel.app](https://oibsip-client.vercel.app) *(or your Vercel deployment link)*
+- **⚡ Live Backend API Service (Render)**: [https://oibsip-hirj.onrender.com/api](https://oibsip-hirj.onrender.com/api)
+- **💻 GitHub Repository**: [https://github.com/Sparsh88/OIBSIP](https://github.com/Sparsh88/OIBSIP)
+
+---
+
+## 📌 Project Overview
+**PizzaNest** is an enterprise-grade full-stack pizza ordering, live kitchen dispatch, real-time WebSocket order tracking, and automated inventory management web application. It was engineered as part of the **OASIS INFOBYTE Web Development & Designing Internship (Level 3 — Task 1)**.
+
+The platform bridges a **Customer Ordering Portal** with a **Master Administrator Dashboard**, synchronized in real time via **WebSockets (Socket.IO)** and secured with **JWT Authentication** and **Role-Based Access Control (RBAC)**.
 
 ---
 
@@ -20,19 +28,19 @@ The project features a **Customer Ordering Portal** paired with a **Master Admin
 
 ### 👤 Customer Experience
 - **Interactive Menu Catalog**: Categorized into *Protein Packed, Gourmet Pizzas, Sides & Breads, Beverages, Desserts, and Extras & Dips*.
-- **Size & Crust Customization**: Real-time price calculation based on chosen size (*Regular, Medium, Large*) and crust type (*Original, Thin, Cheese Burst, Whole Wheat, Gluten Free*).
-- **Coupon & Deals Engine**: Real-time discount validation with promo codes (`BOGO2026`, `CUSTOM30`, `FEAST499`, `FREEBREAD`).
-- **Interactive Cart & Steppers**: Real-time quantity steppers (`+` / `-`), instant item removal, GST (5%) calculation, and dynamic free delivery above ₹500.
-- **Razorpay Test Payment Gateway**: Seamless checkout with simulated test gateway verification and HMAC-SHA256 signature validation.
-- **Live Real-Time Order Tracker**: 4-stage visual progress pipeline (`Order Received` ➔ `In Kitchen` ➔ `Sent to Delivery` ➔ `Delivered`) with animated status indicators powered by Socket.IO.
-- **Customer Account & History**: Registration, login, profile management, and past order receipts.
+- **Size & Crust Customization**: Dynamic real-time price calculations based on size (*Regular, Medium, Large*) and crust type (*Original, Thin, Cheese Burst, Whole Wheat, Gluten Free*).
+- **Coupon & Promo Engine**: Real-time discount validation supporting codes (`BOGO2026`, `CUSTOM30`, `FEAST499`, `FREEBREAD`).
+- **Interactive Cart & Steppers**: Quantity adjustment, instant item removal, GST (5%) calculation, and dynamic free delivery above ₹500.
+- **Razorpay Test Payment Gateway**: Simulated test gateway integration with HMAC-SHA256 signature verification.
+- **Live Real-Time Order Tracker**: 4-stage visual progress pipeline (`Order Received` ➔ `In Kitchen` ➔ `Sent to Delivery` ➔ `Delivered`) powered by Socket.IO.
+- **Customer Account & History**: Secure registration, login, profile management, and order history receipts.
 
 ### 👑 Administrator Operations
 - **KPI Metrics Dashboard**: Live analytics tracking Total Revenue, Orders Today, Kitchen Queue, and Low-Stock warnings.
 - **Real-Time Kitchen Pipeline**: Instant receipt of customer orders via WebSocket broadcast; one-click order status advancement.
 - **Automated Inventory Deduction**: Automatic portion deduction of ingredients from MongoDB upon order confirmation.
 - **Inventory Restock Management**: One-click restock buttons (`+10`, `+50`) and custom threshold alerts.
-- **Background Cron Alerts**: Automated `node-cron` low-stock background monitor with email notification cooldowns.
+- **Background Cron Alerts**: Automated `node-cron` low-stock background monitor with email notification triggers.
 
 ---
 
@@ -41,7 +49,7 @@ The project features a **Customer Ordering Portal** paired with a **Master Admin
 | Domain | Technology | Purpose |
 | :--- | :--- | :--- |
 | **Frontend** | React.js 18 + Vite | High-performance SPA with fast HMR |
-| **Styling** | Vanilla CSS + Design System | Custom variables, typography, and micro-interactions |
+| **Styling** | Vanilla CSS + Design System | Custom design tokens, typography, and mobile responsive media queries |
 | **Routing** | React Router v6 | Client-side routing with protected route guards |
 | **Icons & UI** | Lucide React + Canvas Confetti | Modern iconography & checkout celebration effects |
 | **Backend API** | Node.js + Express.js (ES Modules) | RESTful API endpoints & controller architecture |
@@ -147,8 +155,8 @@ erDiagram
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/PizzaNest-PizzaDelivery.git
-cd PizzaNest-PizzaDelivery
+git clone https://github.com/Sparsh88/OIBSIP.git
+cd OIBSIP
 ```
 
 ### 2. Configure Environment Variables
@@ -202,48 +210,33 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 
-## 🔐 Demo Credentials
+## 🔐 Credentials Configuration
 
-| Role | Email | Password | Portal |
+| Role | Email | Password | Access Portal |
 | :--- | :--- | :--- | :--- |
-| **👑 Master Administrator** | `admin@pizzanest.com` | Defined in `server/.env` (`ADMIN_INITIAL_PASSWORD`) | `/admin/login` |
+| **👑 Master Administrator** | Configured in `server/.env` (`ADMIN_EMAIL`) | Configured in `server/.env` (`ADMIN_INITIAL_PASSWORD`) | `/admin/login` |
 | **👤 Demo Customer** | `user@pizzanest.com` | `User@123456` | `/login` |
 
----
-
-## 🚀 Deployment Guide
-
-### Deploy Backend to Render
-1. Create a **New Web Service** on [Render Dashboard](https://dashboard.render.com/).
-2. Connect your GitHub repository.
-3. Configure:
-   - **Root Directory**: `server`
-   - **Build Command**: `npm install`
-   - **Start Command**: `node src/server.js`
-4. Add all environment variables from `server/.env`.
-5. Note your deployed URL (e.g. `https://pizzanest-server.onrender.com`).
-
-### Deploy Frontend to Vercel
-1. Import repository on [Vercel](https://vercel.com/new).
-2. Configure:
-   - **Framework Preset**: `Vite`
-   - **Root Directory**: `client`
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-3. Add Environment Variable:
-   - `VITE_API_URL=https://pizzanest-server.onrender.com/api`
-4. Click **Deploy**. (SPA rewrites are pre-configured in `client/vercel.json`).
+*Note: Real database credentials and master admin passwords are stored in private `.env` files and are never exposed in documentation.*
 
 ---
 
 ## 👨‍💻 Author & Internship Details
 
-- **Student / Developer**: **Sparsh Chauhan**
-- **Internship**: **OASIS INFOBYTE Web Development & Designing Internship**
-- **Task**: **Level 3 — Task 1: Pizza Delivery Full-Stack Application**
-- **Submission Date**: October 2026
+**Sparsh Chauhan**  
+*Computer Science & Engineering Student | Full Stack Developer*
+
+- **🌐 Portfolio**: [https://portfolio-delta-topaz-jsfd5oekgj.vercel.app](https://portfolio-delta-topaz-jsfd5oekgj.vercel.app)
+- **💻 GitHub**: [@Sparsh88](https://github.com/Sparsh88)
+- **🔗 LinkedIn**: [linkedin.com/in/sparsh88](https://linkedin.com/in/sparsh88)
+- **📧 Email**: [sparshchauhan050@gmail.com](mailto:sparshchauhan050@gmail.com)
+
+### Internship Submission Details
+- **Organization**: **OASIS INFOBYTE**
+- **Domain**: **Web Development & Designing Internship**
+- **Level**: **Level 3 — Task 1: Pizza Delivery Full-Stack Application**
 
 ---
 
 ## 📄 License & Attribution
-This project is licensed under the **ISC License** — developed and submitted by **Sparsh Chauhan** exclusively for the **OASIS INFOBYTE Web Development & Designing Internship (Level 3 — Task 1)**. All rights reserved for internship evaluation and academic presentation purposes.
+This project is licensed under the **ISC License** — developed and submitted by **Sparsh Chauhan** for the **OASIS INFOBYTE Web Development & Designing Internship (Level 3 — Task 1)**. All rights reserved.
