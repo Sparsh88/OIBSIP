@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export const Preloader = () => {
+  const location = useLocation();
   const [progress, setProgress] = useState(0);
   const [isDone, setIsDone] = useState(false);
-  const [shouldRender, setShouldRender] = useState(true);
+  const [shouldRender, setShouldRender] = useState(() => {
+    return !sessionStorage.getItem('pizzanest_preloader_seen');
+  });
 
   useEffect(() => {
+    if (!shouldRender) return;
+
     const duration = 1800; // 1.8 seconds smooth count
     const startTime = performance.now();
+    let animationFrameId;
 
     const updateProgress = (currentTime) => {
       const elapsed = currentTime - startTime;
@@ -18,9 +25,10 @@ export const Preloader = () => {
       setProgress(easedProgress);
 
       if (progressRatio < 1) {
-        requestAnimationFrame(updateProgress);
+        animationFrameId = requestAnimationFrame(updateProgress);
       } else {
         setProgress(100);
+        sessionStorage.setItem('pizzanest_preloader_seen', 'true');
         setTimeout(() => {
           setIsDone(true);
           setTimeout(() => setShouldRender(false), 750); // Cleanly unmount after slide-up curtain exit
@@ -28,8 +36,44 @@ export const Preloader = () => {
       }
     };
 
-    requestAnimationFrame(updateProgress);
-  }, []);
+    animationFrameId = requestAnimationFrame(updateProgress);
+
+    return () => {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    };
+  }, [shouldRender]);
+
+  // Instantly remove starting animation when user clicks on any link or button
+  useEffect(() => {
+    if (!shouldRender) return;
+
+    const handleDismiss = () => {
+      sessionStorage.setItem('pizzanest_preloader_seen', 'true');
+      setIsDone(true);
+      setShouldRender(false);
+    };
+
+    const handleLinkClick = (e) => {
+      const target = e.target;
+      const isLink = target.closest('a') || target.closest('button') || target.closest('[role="button"]') || target.closest('[href]');
+      if (isLink) {
+        handleDismiss();
+      }
+    };
+
+    window.addEventListener('click', handleLinkClick, { capture: true });
+
+    return () => {
+      window.removeEventListener('click', handleLinkClick, { capture: true });
+    };
+  }, [shouldRender]);
+
+  // Remove starting animation if location changes (e.g. user navigates via link)
+  useEffect(() => {
+    if (sessionStorage.getItem('pizzanest_preloader_seen')) {
+      setShouldRender(false);
+    }
+  }, [location.pathname]);
 
   if (!shouldRender) return null;
 

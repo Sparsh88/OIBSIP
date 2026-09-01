@@ -266,3 +266,25 @@ a {
     display: none !important;
   }
 }
+
+/* ==========================================================================
+   SCROLL REVEAL & VIEWPORT ANIMATIONS (PORTFOLIO-STYLE)
+   ========================================================================== */
+.scroll-reveal-box,
+.stagger-item {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Accessibility: gracefully disable transforms & delays if user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal-box,
+  .stagger-item,
+  .stagger-reveal-container {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+

@@ -445,13 +445,13 @@ export const Navbar = () => {
           >
             🍕 Menu Catalog
           </Link>
-          <a
-            href="/#deals"
+          <Link
+            to="/#deals"
             onClick={() => setMobileMenuOpen(false)}
             style={{ fontSize: '1rem', fontWeight: '800', color: '#1E3F20' }}
           >
             🎁 PizzaNest Rewards & Deals
-          </a>
+          </Link>
           <div
             onClick={() => {
               setMobileMenuOpen(false);

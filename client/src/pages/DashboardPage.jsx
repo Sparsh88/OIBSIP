@@ -18,6 +18,7 @@ import {
 import API from '../services/api';
 import { PizzaCard } from '../components/PizzaCard';
 import { Loader } from '../components/Loader';
+import { ScrollReveal, StaggerContainer, StaggerItem } from '../components/ScrollReveal';
 import { useCart, AVAILABLE_COUPONS } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
 
@@ -365,7 +366,10 @@ export const DashboardPage = () => {
               </button>
             </div>
           ) : (
-            <div
+            <StaggerContainer
+              staggerDelay={0.08}
+              distance={35}
+              duration={0.6}
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))',
@@ -373,9 +377,11 @@ export const DashboardPage = () => {
               }}
             >
               {pizzas.map((pizza) => (
-                <PizzaCard key={pizza._id} pizza={pizza} />
+                <StaggerItem key={pizza._id}>
+                  <PizzaCard pizza={pizza} />
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           )}
         </div>
 

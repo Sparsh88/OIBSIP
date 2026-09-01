@@ -16,6 +16,7 @@ import API from '../services/api';
 import { PizzaCard } from '../components/PizzaCard';
 import { Loader } from '../components/Loader';
 import { HeroSlider } from '../components/HeroSlider';
+import { ScrollReveal, StaggerContainer, StaggerItem } from '../components/ScrollReveal';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
 
@@ -171,23 +172,28 @@ export const LandingPage = () => {
       <section style={{ padding: '2.5rem 0 3.5rem' }}>
         <div className="max-w-7xl">
           {/* Section Heading */}
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <h2
-              style={{
-                fontFamily: '"Impact", "Arial Black", "Outfit", sans-serif',
-                fontSize: '2rem',
-                fontWeight: '900',
-                letterSpacing: '0.2px',
-                color: '#1F2937',
-                textTransform: 'none',
-              }}
-            >
-              Explore Our Menu
-            </h2>
-          </div>
+          <ScrollReveal direction="up" distance={30} duration={0.6}>
+            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+              <h2
+                style={{
+                  fontFamily: '"Impact", "Arial Black", "Outfit", sans-serif',
+                  fontSize: '2rem',
+                  fontWeight: '900',
+                  letterSpacing: '0.2px',
+                  color: '#1F2937',
+                  textTransform: 'none',
+                }}
+              >
+                Explore Our Menu
+              </h2>
+            </div>
+          </ScrollReveal>
 
           {/* Squircle Cards Row */}
-          <div
+          <StaggerContainer
+            staggerDelay={0.1}
+            distance={35}
+            duration={0.65}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -198,7 +204,7 @@ export const LandingPage = () => {
             }}
           >
             {MENU_CATEGORIES.map((cat, idx) => (
-              <div
+              <StaggerItem
                 key={idx}
                 onClick={() => navigate(`/dashboard?category=${cat.categoryFilter}`)}
                 style={{
@@ -243,11 +249,11 @@ export const LandingPage = () => {
                 >
                   {cat.name}
                 </h4>
-              </div>
+              </StaggerItem>
             ))}
 
             {/* Explore More Pill Button */}
-            <div style={{ flex: '0 0 150px', textAlign: 'center', paddingLeft: '0.5rem' }}>
+            <StaggerItem style={{ flex: '0 0 150px', textAlign: 'center', paddingLeft: '0.5rem' }}>
               <Link
                 to="/dashboard"
                 style={{
@@ -276,29 +282,34 @@ export const LandingPage = () => {
                 <span>Explore More</span>
                 <ArrowRight size={15} />
               </Link>
-            </div>
-          </div>
+            </StaggerItem>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* 3. EXPLORE OUR FAVOURITES (SPLIT DUAL-TONE CARDS) */}
       <section style={{ padding: '1rem 0 4rem' }}>
         <div className="max-w-7xl">
-          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <h2
-              style={{
-                fontFamily: '"Impact", "Arial Black", "Outfit", sans-serif',
-                fontSize: '2.2rem',
-                fontWeight: '900',
-                letterSpacing: '0.2px',
-                color: '#1F2937',
-              }}
-            >
-              Explore Our Favourites
-            </h2>
-          </div>
+          <ScrollReveal direction="up" distance={30} duration={0.65}>
+            <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+              <h2
+                style={{
+                  fontFamily: '"Impact", "Arial Black", "Outfit", sans-serif',
+                  fontSize: '2.2rem',
+                  fontWeight: '900',
+                  letterSpacing: '0.2px',
+                  color: '#1F2937',
+                }}
+              >
+                Explore Our Favourites
+              </h2>
+            </div>
+          </ScrollReveal>
 
-          <div
+          <StaggerContainer
+            staggerDelay={0.15}
+            distance={40}
+            duration={0.7}
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
@@ -306,7 +317,7 @@ export const LandingPage = () => {
             }}
           >
             {FAVOURITES.map((fav) => (
-              <div
+              <StaggerItem
                 key={fav.id}
                 style={{
                   display: 'flex',
@@ -419,9 +430,9 @@ export const LandingPage = () => {
                     </button>
                   </div>
                 </div>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
@@ -436,51 +447,56 @@ export const LandingPage = () => {
         }}
       >
         <div className="max-w-7xl">
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'flex-end',
-              justifyContent: 'space-between',
-              marginBottom: '2.25rem',
-              gap: '1rem',
-            }}
-          >
-            <div>
-              <span
+          <ScrollReveal direction="up" distance={30} duration={0.65}>
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'flex-end',
+                justifyContent: 'space-between',
+                marginBottom: '2.25rem',
+                gap: '1rem',
+              }}
+            >
+              <div>
+                <span
+                  style={{
+                    color: 'var(--primary)',
+                    fontSize: '0.85rem',
+                    fontWeight: '800',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                  }}
+                >
+                  <Flame size={16} /> Exclusive Deals & Discounts
+                </span>
+                <h2 style={{ fontSize: '2.2rem', fontWeight: '900', color: '#1F2937', marginTop: '0.3rem' }}>
+                  Hot Pizza Offers & Combos
+                </h2>
+              </div>
+              <Link
+                to="/dashboard"
                 style={{
                   color: 'var(--primary)',
-                  fontSize: '0.85rem',
-                  fontWeight: '800',
-                  textTransform: 'uppercase',
-                  letterSpacing: '1px',
+                  fontWeight: '700',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.35rem',
                 }}
               >
-                <Flame size={16} /> Exclusive Deals & Discounts
-              </span>
-              <h2 style={{ fontSize: '2.2rem', fontWeight: '900', color: '#1F2937', marginTop: '0.3rem' }}>
-                Hot Pizza Offers & Combos
-              </h2>
+                <span>View All Menu Offers</span>
+                <ChevronRight size={18} />
+              </Link>
             </div>
-            <Link
-              to="/dashboard"
-              style={{
-                color: 'var(--primary)',
-                fontWeight: '700',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.35rem',
-              }}
-            >
-              <span>View All Menu Offers</span>
-              <ChevronRight size={18} />
-            </Link>
-          </div>
+          </ScrollReveal>
 
-          <div
+          <StaggerContainer
+            staggerDelay={0.12}
+            distance={40}
+            duration={0.7}
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
@@ -488,7 +504,7 @@ export const LandingPage = () => {
             }}
           >
             {DEALS.map((deal) => (
-              <div
+              <StaggerItem
                 key={deal.id}
                 style={{
                   background: '#FFFFFF',
@@ -593,9 +609,9 @@ export const LandingPage = () => {
                   <span>{deal.buttonText}</span>
                   <ArrowRight size={16} />
                 </button>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
@@ -604,51 +620,56 @@ export const LandingPage = () => {
       {/* 6. CHEF'S SIGNATURE PIZZAS SHOWCASE */}
       <section style={{ padding: '5rem 0', background: 'var(--bg-page)', borderBottom: '1px solid #F3F4F6' }}>
         <div className="max-w-7xl">
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'flex-end',
-              justifyContent: 'space-between',
-              marginBottom: '3rem',
-              gap: '1rem',
-            }}
-          >
-            <div>
-              <span
-                style={{
-                  color: 'var(--secondary)',
-                  fontSize: '0.85rem',
-                  fontWeight: '800',
-                  textTransform: 'uppercase',
-                  letterSpacing: '1px',
-                }}
-              >
-                Chef's Signature Selections
-              </span>
-              <h2 style={{ fontSize: '2.4rem', fontWeight: '900', color: '#1F2937', marginTop: '0.35rem' }}>
-                Most Popular Pizzas
-              </h2>
-            </div>
-            <Link
-              to="/dashboard"
+          <ScrollReveal direction="up" distance={30} duration={0.65}>
+            <div
               style={{
-                color: 'var(--primary)',
-                fontWeight: '700',
                 display: 'flex',
-                alignItems: 'center',
-                gap: '0.35rem',
+                flexWrap: 'wrap',
+                alignItems: 'flex-end',
+                justifyContent: 'space-between',
+                marginBottom: '3rem',
+                gap: '1rem',
               }}
             >
-              <span>View Full Menu</span>
-              <ChevronRight size={18} />
-            </Link>
-          </div>
+              <div>
+                <span
+                  style={{
+                    color: 'var(--secondary)',
+                    fontSize: '0.85rem',
+                    fontWeight: '800',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                  }}
+                >
+                  Chef's Signature Selections
+                </span>
+                <h2 style={{ fontSize: '2.4rem', fontWeight: '900', color: '#1F2937', marginTop: '0.35rem' }}>
+                  Most Popular Pizzas
+                </h2>
+              </div>
+              <Link
+                to="/dashboard"
+                style={{
+                  color: 'var(--primary)',
+                  fontWeight: '700',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                }}
+              >
+                <span>View Full Menu</span>
+                <ChevronRight size={18} />
+              </Link>
+            </div>
+          </ScrollReveal>
 
           {loading ? (
             <Loader text="Loading gourmet pizza catalog..." />
           ) : (
-            <div
+            <StaggerContainer
+              staggerDelay={0.12}
+              distance={40}
+              duration={0.7}
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
@@ -656,9 +677,11 @@ export const LandingPage = () => {
               }}
             >
               {featuredPizzas.map((pizza) => (
-                <PizzaCard key={pizza._id} pizza={pizza} />
+                <StaggerItem key={pizza._id}>
+                  <PizzaCard pizza={pizza} />
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           )}
         </div>
       </section>
@@ -675,32 +698,39 @@ export const LandingPage = () => {
             }}
           >
             <div>
-              <span
-                style={{
-                  color: 'var(--primary)',
-                  fontSize: '0.85rem',
-                  fontWeight: '800',
-                  textTransform: 'uppercase',
-                  letterSpacing: '1.5px',
-                }}
-              >
-                Our Quality Commitment
-              </span>
-              <h2 style={{ fontSize: '2.5rem', fontWeight: '900', color: '#1F2937', margin: '0.5rem 0 1.25rem' }}>
-                Better Ingredients. Better Pizza.
-              </h2>
-              <p
-                style={{
-                  color: '#4B5563',
-                  fontSize: '1.05rem',
-                  lineHeight: 1.6,
-                  marginBottom: '2rem',
-                }}
-              >
-                We believe exceptional pizza requires authentic ingredients, zero shortcuts, and cutting-edge live order tracking technology.
-              </p>
+              <ScrollReveal direction="up" distance={30} duration={0.65}>
+                <span
+                  style={{
+                    color: 'var(--primary)',
+                    fontSize: '0.85rem',
+                    fontWeight: '800',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1.5px',
+                  }}
+                >
+                  Our Quality Commitment
+                </span>
+                <h2 style={{ fontSize: '2.5rem', fontWeight: '900', color: '#1F2937', margin: '0.5rem 0 1.25rem' }}>
+                  Better Ingredients. Better Pizza.
+                </h2>
+                <p
+                  style={{
+                    color: '#4B5563',
+                    fontSize: '1.05rem',
+                    lineHeight: 1.6,
+                    marginBottom: '2rem',
+                  }}
+                >
+                  We believe exceptional pizza requires authentic ingredients, zero shortcuts, and cutting-edge live order tracking technology.
+                </p>
+              </ScrollReveal>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <StaggerContainer
+                staggerDelay={0.12}
+                distance={30}
+                duration={0.6}
+                style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}
+              >
                 {[
                   {
                     title: '🍕 100% Fresh Dough Made Daily',
@@ -719,40 +749,42 @@ export const LandingPage = () => {
                     desc: 'Zero artificial substitutes, palm oils, or processed binders.',
                   },
                 ].map((item, idx) => (
-                  <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem' }}>
+                  <StaggerItem key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem' }}>
                     <CheckCircle2 size={22} color="var(--accent-green)" style={{ flexShrink: 0, marginTop: '2px' }} />
                     <div>
                       <h4 style={{ fontSize: '1rem', fontWeight: '800', color: '#1F2937' }}>{item.title}</h4>
                       <p style={{ fontSize: '0.85rem', color: '#6B7280', marginTop: '0.15rem' }}>{item.desc}</p>
                     </div>
-                  </div>
+                  </StaggerItem>
                 ))}
-              </div>
+              </StaggerContainer>
             </div>
 
             {/* Right Callout Box */}
-            <div
-              style={{
-                background: 'linear-gradient(135deg, #FFF0F2 0%, #FFFDF9 100%)',
-                padding: '2.75rem',
-                borderRadius: 'var(--radius-xl)',
-                border: '1.5px solid rgba(200, 16, 46, 0.2)',
-                boxShadow: '0 10px 30px rgba(200, 16, 46, 0.08)',
-                textAlign: 'center',
-              }}
-            >
-              <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🍕</div>
-              <h3 style={{ fontSize: '1.8rem', fontWeight: '900', color: '#1F2937', marginBottom: '0.75rem' }}>
-                Ready for Hot & Fresh Pizza?
-              </h3>
-              <p style={{ color: '#4B5563', marginBottom: '2rem', fontSize: '0.95rem', lineHeight: 1.6 }}>
-                Order your favorite gourmet pizzas or build your custom masterpiece. Instant test checkout with Razorpay.
-              </p>
-              <Link to="/dashboard" className="btn btn-primary btn-lg" style={{ width: '100%' }}>
-                <span>Order Now</span>
-                <ArrowRight size={20} />
-              </Link>
-            </div>
+            <ScrollReveal direction="left" distance={40} duration={0.75} delay={0.15}>
+              <div
+                style={{
+                  background: 'linear-gradient(135deg, #FFF0F2 0%, #FFFDF9 100%)',
+                  padding: '2.75rem',
+                  borderRadius: 'var(--radius-xl)',
+                  border: '1.5px solid rgba(200, 16, 46, 0.2)',
+                  boxShadow: '0 10px 30px rgba(200, 16, 46, 0.08)',
+                  textAlign: 'center',
+                }}
+              >
+                <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🍕</div>
+                <h3 style={{ fontSize: '1.8rem', fontWeight: '900', color: '#1F2937', marginBottom: '0.75rem' }}>
+                  Ready for Hot & Fresh Pizza?
+                </h3>
+                <p style={{ color: '#4B5563', marginBottom: '2rem', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                  Order your favorite gourmet pizzas or build your custom masterpiece. Instant test checkout with Razorpay.
+                </p>
+                <Link to="/dashboard" className="btn btn-primary btn-lg" style={{ width: '100%' }}>
+                  <span>Order Now</span>
+                  <ArrowRight size={20} />
+                </Link>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>

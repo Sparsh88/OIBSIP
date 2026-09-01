@@ -17,6 +17,7 @@ import { useSocket } from '../context/SocketContext';
 import { useToast } from '../context/ToastContext';
 import { OrderStatusTracker } from '../components/OrderStatusTracker';
 import { Loader } from '../components/Loader';
+import { ScrollReveal, StaggerContainer, StaggerItem } from '../components/ScrollReveal';
 
 export const OrderTrackingPage = () => {
   const { id } = useParams();
@@ -165,10 +166,15 @@ export const OrderTrackingPage = () => {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
         {/* Real-Time Live Status Tracker */}
-        <OrderStatusTracker currentStatus={order.orderStatus} statusHistory={order.statusHistory} />
+        <ScrollReveal direction="up" distance={30} duration={0.65}>
+          <OrderStatusTracker currentStatus={order.orderStatus} statusHistory={order.statusHistory} />
+        </ScrollReveal>
 
         {/* Order Details & Summary Grid */}
-        <div
+        <StaggerContainer
+          staggerDelay={0.12}
+          distance={35}
+          duration={0.65}
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
@@ -176,7 +182,7 @@ export const OrderTrackingPage = () => {
           }}
         >
           {/* Itemized Order Items */}
-          <div
+          <StaggerItem
             className="card"
             style={{
               padding: '2rem',
@@ -255,10 +261,10 @@ export const OrderTrackingPage = () => {
                 ₹{order.totalAmount}
               </span>
             </div>
-          </div>
+          </StaggerItem>
 
           {/* Delivery & Payment Details */}
-          <div
+          <StaggerItem
             className="card"
             style={{
               padding: '2rem',
@@ -322,8 +328,8 @@ export const OrderTrackingPage = () => {
                 </div>
               )}
             </div>
-          </div>
-        </div>
+          </StaggerItem>
+        </StaggerContainer>
       </div>
     </div>
   );

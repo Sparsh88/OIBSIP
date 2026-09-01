@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Clock, MapPin, Phone, Mail } from 'lucide-react';
+import { ScrollReveal, StaggerContainer, StaggerItem } from './ScrollReveal';
 
 export const Footer = () => {
   return (
@@ -17,7 +18,10 @@ export const Footer = () => {
       }}
     >
       <div style={{ width: '100%', padding: '0 2.25rem' }}>
-        <div
+        <StaggerContainer
+          staggerDelay={0.1}
+          distance={30}
+          duration={0.6}
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
@@ -26,7 +30,7 @@ export const Footer = () => {
           }}
         >
           {/* Brand Column */}
-          <div>
+          <StaggerItem>
             <div style={{ marginBottom: '0.6rem' }}>
               <span
                 style={{
@@ -54,10 +58,10 @@ export const Footer = () => {
               <Shield size={14} color="#1E3F20" />
               <span>100% Secure Razorpay Checkout</span>
             </div>
-          </div>
+          </StaggerItem>
 
           {/* Quick Links */}
-          <div>
+          <StaggerItem>
             <h4
               style={{
                 fontFamily: '"Impact", "Arial Black", "Outfit", sans-serif',
@@ -105,10 +109,10 @@ export const Footer = () => {
                 </Link>
               </li>
             </ul>
-          </div>
+          </StaggerItem>
 
           {/* Kitchen Schedule */}
-          <div>
+          <StaggerItem>
             <h4
               style={{
                 fontFamily: '"Impact", "Arial Black", "Outfit", sans-serif',
@@ -156,10 +160,10 @@ export const Footer = () => {
                 ● Kitchen Live
               </div>
             </div>
-          </div>
+          </StaggerItem>
 
           {/* Contact Hotline */}
-          <div id="contact">
+          <StaggerItem id="contact">
             <h4
               style={{
                 fontFamily: '"Impact", "Arial Black", "Outfit", sans-serif',
@@ -193,35 +197,37 @@ export const Footer = () => {
                 <span style={{ color: '#374151', fontWeight: '600' }}>support@pizzanest.com</span>
               </div>
             </div>
-          </div>
-        </div>
+          </StaggerItem>
+        </StaggerContainer>
 
         {/* Bottom Copyright Bar */}
-        <div
-          style={{
-            borderTop: '1px solid #E5E7EB',
-            paddingTop: '1rem',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '0.75rem',
-            fontSize: '0.75rem',
-            color: '#6B7280',
-          }}
-        >
-          <p>
-            &copy; {new Date().getFullYear()} PizzaNest Artisan Kitchen. Crafted by{' '}
-            <strong style={{ color: '#1F2937' }}>Sparsh Chauhan</strong> for Oasis Infobyte.
-          </p>
-          <div style={{ display: 'flex', gap: '1.25rem', fontWeight: '600' }}>
-            <span style={{ cursor: 'pointer', color: '#6B7280' }}>Privacy Policy</span>
-            <span style={{ cursor: 'pointer', color: '#6B7280' }}>Terms of Service</span>
-            <Link to="/admin/login" style={{ color: '#9CA3AF', textDecoration: 'none' }}>
-              Admin Login
-            </Link>
+        <ScrollReveal direction="up" distance={20} duration={0.5} delay={0.2}>
+          <div
+            style={{
+              borderTop: '1px solid #E5E7EB',
+              paddingTop: '1rem',
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '0.75rem',
+              fontSize: '0.75rem',
+              color: '#6B7280',
+            }}
+          >
+            <p>
+              &copy; {new Date().getFullYear()} PizzaNest Artisan Kitchen. Crafted by{' '}
+              <strong style={{ color: '#1F2937' }}>Sparsh Chauhan</strong> for Oasis Infobyte.
+            </p>
+            <div style={{ display: 'flex', gap: '1.25rem', fontWeight: '600' }}>
+              <span style={{ cursor: 'pointer', color: '#6B7280' }}>Privacy Policy</span>
+              <span style={{ cursor: 'pointer', color: '#6B7280' }}>Terms of Service</span>
+              <Link to="/admin/login" style={{ color: '#9CA3AF', textDecoration: 'none' }}>
+                Admin Login
+              </Link>
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </footer>
   );
