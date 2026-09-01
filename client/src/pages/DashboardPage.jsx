@@ -137,6 +137,7 @@ export const DashboardPage = () => {
     <div style={{ background: '#FFFDF9', minHeight: '100vh', width: '100%' }}>
       {/* FULL-WIDTH 2-COLUMN LAYOUT WITH VERTICAL DIVIDER */}
       <div
+        className="dashboard-main-grid"
         style={{
           display: 'grid',
           gridTemplateColumns: 'minmax(0, 1fr) 390px',
@@ -145,7 +146,7 @@ export const DashboardPage = () => {
         }}
       >
         {/* LEFT COLUMN: MENU CATALOG */}
-        <div style={{ padding: '1.25rem 2.25rem 5rem 2.25rem', minWidth: '0' }}>
+        <div className="dashboard-catalog-column" style={{ padding: '1.25rem 2.25rem 5rem 2.25rem', minWidth: '0' }}>
           {/* 1. HORIZONTAL CATEGORY TABS WITH GREEN ACTIVE UNDERLINE */}
           <div
             style={{
@@ -387,6 +388,7 @@ export const DashboardPage = () => {
 
         {/* RIGHT COLUMN: FULL-HEIGHT STICKY "YOUR CART" PANEL WITH CHECKOUT AT BOTTOM */}
         <div
+          className="dashboard-cart-sidebar"
           style={{
             borderLeft: '1.5px solid #E5E7EB',
             background: '#FFFFFF',

@@ -178,6 +178,7 @@ export const CheckoutPage = () => {
       </Link>
 
       <div
+        className="responsive-2col-grid"
         style={{
           display: 'grid',
           gridTemplateColumns: 'minmax(0, 1fr) 380px',

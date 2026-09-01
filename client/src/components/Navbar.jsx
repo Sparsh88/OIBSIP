@@ -78,6 +78,7 @@ export const Navbar = () => {
       }}
     >
       <div
+        className="navbar-container"
         style={{
           width: '100%',
           padding: '0 2.25rem',

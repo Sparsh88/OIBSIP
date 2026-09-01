@@ -143,6 +143,7 @@ export const HeroSlider = () => {
 
             {/* Gradient Overlay for Text Readability */}
             <div
+              className="hero-slide-overlay"
               style={{
                 position: 'absolute',
                 inset: 0,

@@ -288,3 +288,75 @@ a {
   }
 }
 
+/* ==========================================================================
+   MOBILE & RESPONSIVE LAYOUT OPTIMIZATIONS
+   ========================================================================== */
+
+/* Prevent horizontal scrollbar on mobile devices */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Responsive 2-column layout switcher (Cart & Checkout pages) */
+@media (max-width: 960px) {
+  .responsive-2col-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+}
+
+/* Dashboard page mobile catalog layout */
+@media (max-width: 1024px) {
+  .dashboard-main-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .dashboard-cart-sidebar {
+    display: none !important;
+  }
+  .dashboard-catalog-column {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* Mobile Navbar padding & spacing */
+@media (max-width: 640px) {
+  .navbar-container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* Mobile adjustments for Favourites split cards on Landing Page */
+@media (max-width: 640px) {
+  .favourite-split-card {
+    flex-direction: column !important;
+    min-height: auto !important;
+  }
+  .favourite-split-card-image {
+    min-height: 180px !important;
+    max-height: 200px !important;
+  }
+  .favourite-split-card-content {
+    padding: 1.25rem 1.25rem !important;
+  }
+  .hero-slide-overlay {
+    padding: 1.25rem 1.25rem !important;
+  }
+}
+
+/* Cart item row responsive stack on mobile */
+@media (max-width: 580px) {
+  .cart-item-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+  .cart-item-actions {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+}
+
+

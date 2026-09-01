@@ -312,13 +312,14 @@ export const LandingPage = () => {
             duration={0.7}
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))',
               gap: '2rem',
             }}
           >
             {FAVOURITES.map((fav) => (
               <StaggerItem
                 key={fav.id}
+                className="favourite-split-card"
                 style={{
                   display: 'flex',
                   borderRadius: '24px',
@@ -336,7 +337,7 @@ export const LandingPage = () => {
                 }}
               >
                 {/* Left Food Image Half */}
-                <div style={{ flex: '1', minWidth: '160px', position: 'relative' }}>
+                <div className="favourite-split-card-image" style={{ flex: '1', minWidth: '140px', position: 'relative' }}>
                   <img
                     src={fav.image}
                     alt={fav.name}
@@ -346,6 +347,7 @@ export const LandingPage = () => {
 
                 {/* Right Rich Brand Colored Content Half */}
                 <div
+                  className="favourite-split-card-content"
                   style={{
                     flex: '1.2',
                     padding: '1.5rem 1.75rem',

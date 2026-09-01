@@ -110,6 +110,7 @@ export const CartPage = () => {
       </div>
 
       <div
+        className="responsive-2col-grid"
         style={{
           display: 'grid',
           gridTemplateColumns: 'minmax(0, 1fr) 380px',
@@ -122,7 +123,7 @@ export const CartPage = () => {
           {cartItems.map((item, idx) => (
             <div
               key={idx}
-              className="card"
+              className="card cart-item-row"
               style={{
                 display: 'flex',
                 alignItems: 'center',
