@@ -7,6 +7,7 @@ import { useToast } from '../context/ToastContext';
 export const CartPage = () => {
   const {
     cartItems,
+    availableCoupons,
     updateQuantity,
     removeFromCart,
     clearCart,
@@ -301,12 +302,12 @@ export const CartPage = () => {
             Order Summary
           </h3>
 
-          {/* Apply Coupon Box */}
+          {/* Apply Coupon Box & Available Offers */}
           <div style={{ marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: '1px solid #E5E7EB' }}>
-            <span style={{ fontSize: '0.82rem', fontWeight: '800', color: '#4B5563', display: 'block', marginBottom: '0.5rem' }}>
+            <span style={{ fontSize: '0.85rem', fontWeight: '800', color: '#1F2937', display: 'block', marginBottom: '0.5rem' }}>
               Have a Promo Code?
             </span>
-            <div style={{ display: 'flex', gap: '0.4rem' }}>
+            <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '1rem' }}>
               <input
                 type="text"
                 value={couponInput}
@@ -335,41 +336,116 @@ export const CartPage = () => {
               </button>
             </div>
 
-            {/* Applied Coupon Pill */}
+            {/* Applied Coupon Active Banner */}
             {appliedCoupon && (
               <div
                 style={{
-                  marginTop: '0.75rem',
+                  marginBottom: '1rem',
                   background: '#F0FDF4',
-                  border: '1px solid #BBF7D0',
-                  borderRadius: '8px',
-                  padding: '0.45rem 0.75rem',
+                  border: '1.5px solid #86EFAC',
+                  borderRadius: '10px',
+                  padding: '0.6rem 0.85rem',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <Tag size={14} color="#166534" />
-                  <span style={{ fontSize: '0.8rem', fontWeight: '800', color: '#166534' }}>
-                    {appliedCoupon.code} Applied ({appliedCoupon.title})
-                  </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Tag size={16} color="#166534" />
+                  <div>
+                    <span style={{ fontSize: '0.82rem', fontWeight: '900', color: '#166534', display: 'block' }}>
+                      Coupon "{appliedCoupon.code}" Applied!
+                    </span>
+                    <span style={{ fontSize: '0.74rem', color: '#15803D' }}>{appliedCoupon.title}</span>
+                  </div>
                 </div>
                 <button
                   onClick={removeCoupon}
                   style={{
-                    background: 'transparent',
-                    border: 'none',
+                    background: '#DCFCE7',
+                    border: '1px solid #86EFAC',
+                    borderRadius: '6px',
                     color: '#DC2626',
                     cursor: 'pointer',
                     fontSize: '0.75rem',
                     fontWeight: '800',
+                    padding: '0.2rem 0.5rem',
                   }}
                 >
-                  ✕
+                  Remove ✕
                 </button>
               </div>
             )}
+
+            {/* LIST OF AVAILABLE COUPONS */}
+            <div style={{ marginTop: '0.75rem' }}>
+              <span style={{ fontSize: '0.78rem', fontWeight: '800', color: '#6B7280', textTransform: 'uppercase', display: 'block', marginBottom: '0.5rem', letterSpacing: '0.5px' }}>
+                Available Coupons ({availableCoupons?.length || 0})
+              </span>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', maxHeight: '200px', overflowY: 'auto' }}>
+                {availableCoupons?.map((coupon) => {
+                  const isCurrent = appliedCoupon?.code === coupon.code;
+                  return (
+                    <div
+                      key={coupon.code}
+                      style={{
+                        padding: '0.6rem 0.75rem',
+                        borderRadius: '8px',
+                        border: isCurrent ? '1.5px solid #166534' : '1px solid #E5E7EB',
+                        background: isCurrent ? '#F0FDF4' : '#F9FAFB',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '0.5rem',
+                      }}
+                    >
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.15rem' }}>
+                          <span
+                            style={{
+                              fontSize: '0.75rem',
+                              fontWeight: '900',
+                              background: '#FEF3C7',
+                              color: '#92400E',
+                              padding: '0.1rem 0.4rem',
+                              borderRadius: '4px',
+                              border: '1px solid #FCD34D',
+                            }}
+                          >
+                            {coupon.code}
+                          </span>
+                          <span style={{ fontSize: '0.8rem', fontWeight: '800', color: '#1F2937' }}>
+                            {coupon.title}
+                          </span>
+                        </div>
+                        <p style={{ fontSize: '0.72rem', color: '#6B7280', margin: 0 }}>
+                          {coupon.description}
+                        </p>
+                      </div>
+
+                      <button
+                        onClick={() => handleApplyCoupon(coupon.code)}
+                        disabled={isCurrent}
+                        style={{
+                          padding: '0.3rem 0.65rem',
+                          borderRadius: '6px',
+                          border: isCurrent ? '1px solid #86EFAC' : '1px solid #1E3F20',
+                          background: isCurrent ? '#DCFCE7' : '#1E3F20',
+                          color: isCurrent ? '#166534' : '#FFFFFF',
+                          fontSize: '0.75rem',
+                          fontWeight: '800',
+                          cursor: isCurrent ? 'default' : 'pointer',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {isCurrent ? 'Applied ✓' : 'Apply'}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.92rem' }}>

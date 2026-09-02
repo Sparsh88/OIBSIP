@@ -19,9 +19,32 @@ import { useToast } from '../context/ToastContext';
 
 export const CheckoutPage = () => {
   const { user } = useAuth();
-  const { cartItems, subtotal, discountAmount, appliedCoupon, tax, deliveryFee, totalAmount, clearCart } = useCart();
+  const {
+    cartItems,
+    subtotal,
+    discountAmount,
+    appliedCoupon,
+    availableCoupons,
+    applyCoupon,
+    removeCoupon,
+    tax,
+    deliveryFee,
+    totalAmount,
+    clearCart,
+  } = useCart();
   const { success, error, info } = useToast();
   const navigate = useNavigate();
+  const [couponInput, setCouponInput] = useState('');
+
+  const handleApplyCoupon = (code) => {
+    const res = applyCoupon(code);
+    if (res.success) {
+      success(res.message);
+      setCouponInput('');
+    } else {
+      error(res.message);
+    }
+  };
 
   const [address, setAddress] = useState({
     street: '',
@@ -480,6 +503,131 @@ export const CheckoutPage = () => {
                 <span style={{ fontWeight: '800', color: 'var(--primary)' }}>₹{item.totalPrice}</span>
               </div>
             ))}
+          </div>
+
+          {/* AVAILABLE PROMO COUPONS SECTION IN CHECKOUT */}
+          <div style={{ marginBottom: '1.25rem', paddingTop: '1rem', borderTop: '1px solid #E5E7EB' }}>
+            <span style={{ fontSize: '0.82rem', fontWeight: '800', color: '#1F2937', display: 'block', marginBottom: '0.5rem' }}>
+              Apply Promo Code
+            </span>
+
+            {/* Input & Apply Button */}
+            <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.75rem' }}>
+              <input
+                type="text"
+                value={couponInput}
+                onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                placeholder="PROMO CODE"
+                style={{
+                  flex: 1,
+                  padding: '0.45rem 0.75rem',
+                  border: '1.5px solid #D1D5DB',
+                  borderRadius: '8px',
+                  fontSize: '0.82rem',
+                  fontWeight: '700',
+                  textTransform: 'uppercase',
+                  outline: 'none',
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleApplyCoupon(couponInput);
+                }}
+              />
+              <button
+                onClick={() => handleApplyCoupon(couponInput)}
+                className="btn btn-primary btn-sm"
+                style={{ borderRadius: '8px', padding: '0 0.85rem' }}
+              >
+                Apply
+              </button>
+            </div>
+
+            {/* Applied Coupon Pill */}
+            {appliedCoupon && (
+              <div
+                style={{
+                  marginBottom: '0.75rem',
+                  background: '#F0FDF4',
+                  border: '1.5px solid #86EFAC',
+                  borderRadius: '8px',
+                  padding: '0.5rem 0.75rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <Tag size={15} color="#166534" />
+                  <span style={{ fontSize: '0.78rem', fontWeight: '900', color: '#166534' }}>
+                    {appliedCoupon.code} ({appliedCoupon.title})
+                  </span>
+                </div>
+                <button
+                  onClick={removeCoupon}
+                  style={{
+                    background: '#DCFCE7',
+                    border: '1px solid #86EFAC',
+                    borderRadius: '4px',
+                    color: '#DC2626',
+                    cursor: 'pointer',
+                    fontSize: '0.72rem',
+                    fontWeight: '800',
+                    padding: '0.15rem 0.4rem',
+                  }}
+                >
+                  Remove ✕
+                </button>
+              </div>
+            )}
+
+            {/* Quick Select Coupon List */}
+            <div>
+              <span style={{ fontSize: '0.75rem', fontWeight: '800', color: '#6B7280', textTransform: 'uppercase', display: 'block', marginBottom: '0.4rem' }}>
+                Offers You Can Apply ({availableCoupons?.length || 0})
+              </span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '180px', overflowY: 'auto' }}>
+                {availableCoupons?.map((c) => {
+                  const isCurrent = appliedCoupon?.code === c.code;
+                  return (
+                    <div
+                      key={c.code}
+                      style={{
+                        padding: '0.5rem 0.65rem',
+                        borderRadius: '8px',
+                        border: isCurrent ? '1.5px solid #166534' : '1px solid #E5E7EB',
+                        background: isCurrent ? '#F0FDF4' : '#F9FAFB',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '0.4rem',
+                      }}
+                    >
+                      <div>
+                        <span style={{ fontSize: '0.75rem', fontWeight: '900', color: '#1F2937', display: 'block' }}>
+                          🎟️ {c.code} &bull; <small style={{ color: '#166534' }}>{c.title}</small>
+                        </span>
+                        <span style={{ fontSize: '0.7rem', color: '#6B7280' }}>{c.description}</span>
+                      </div>
+                      <button
+                        onClick={() => handleApplyCoupon(c.code)}
+                        disabled={isCurrent}
+                        style={{
+                          padding: '0.25rem 0.55rem',
+                          borderRadius: '6px',
+                          border: isCurrent ? '1px solid #86EFAC' : '1px solid #1E3F20',
+                          background: isCurrent ? '#DCFCE7' : '#1E3F20',
+                          color: isCurrent ? '#166534' : '#FFFFFF',
+                          fontSize: '0.72rem',
+                          fontWeight: '800',
+                          cursor: isCurrent ? 'default' : 'pointer',
+                        }}
+                      >
+                        {isCurrent ? 'Applied' : 'Apply'}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
           <div

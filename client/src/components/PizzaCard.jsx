@@ -289,46 +289,63 @@ export const PizzaCard = ({ pizza }) => {
           </div>
         )}
 
-        {/* 3. BOTTOM PRICE & CLEAN ACTION BUTTONS */}
+        {/* 3. BOTTOM PRICE & CLEAN 2-ROW ACTION BUTTONS */}
         <div
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
             marginTop: 'auto',
-            paddingTop: '0.75rem',
+            paddingTop: '0.85rem',
             borderTop: '1px solid #F3F4F6',
-            gap: '0.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.75rem',
           }}
         >
-          <span
-            style={{
-              fontFamily: '"Outfit", sans-serif',
-              fontSize: '1.25rem',
-              fontWeight: '900',
-              color: '#1F2937',
-            }}
-          >
-            ₹ {currentPrice.toFixed(2)}
-          </span>
+          {/* PRICE DISPLAY */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{ fontSize: '0.72rem', color: '#6B7280', fontWeight: '700', textTransform: 'uppercase' }}>
+                Total Price
+              </span>
+              <span
+                style={{
+                  fontFamily: '"Outfit", sans-serif',
+                  fontSize: '1.35rem',
+                  fontWeight: '900',
+                  color: '#1F2937',
+                  lineHeight: 1.1,
+                }}
+              >
+                ₹ {currentPrice.toFixed(2)}
+              </span>
+            </div>
+            {isPurePizza && (
+              <span style={{ fontSize: '0.75rem', fontWeight: '800', color: '#1E3F20', background: '#F0FDF4', padding: '0.2rem 0.6rem', borderRadius: '20px' }}>
+                {selectedSize}
+              </span>
+            )}
+          </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          {/* ACTION BUTTONS ROW */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             {isPurePizza && (
               <button
                 onClick={() => navigate(`/customize/${pizza._id}`)}
                 style={{
+                  flex: 1,
                   background: '#F3F4F6',
                   color: '#1E3F20',
                   border: '1.5px solid #D1D5DB',
                   borderRadius: 'var(--radius-full)',
-                  padding: '0.48rem 0.9rem',
+                  padding: '0.55rem 0.5rem',
                   fontSize: '0.82rem',
                   fontWeight: '800',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
+                  justifyContent: 'center',
                   gap: '0.35rem',
                   transition: 'all 0.2s',
+                  whiteSpace: 'nowrap',
                 }}
                 onMouseOver={(e) => {
                   e.currentTarget.style.background = '#E5E7EB';
@@ -348,14 +365,18 @@ export const PizzaCard = ({ pizza }) => {
             <button
               onClick={handleQuickAdd}
               style={{
+                flex: 1,
                 background: '#1E3F20',
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: 'var(--radius-full)',
-                padding: '0.5rem 1.15rem',
+                padding: '0.55rem 0.5rem',
                 fontSize: '0.82rem',
                 fontWeight: '900',
                 cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 boxShadow: '0 2px 8px rgba(30, 63, 32, 0.25)',
                 transition: 'all 0.2s',
                 whiteSpace: 'nowrap',
