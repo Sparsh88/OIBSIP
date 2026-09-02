@@ -65,13 +65,13 @@ export const RegisterPage = () => {
       const data = await register({
         name: formData.name.trim(),
         email: formData.email.trim(),
-        phone: formData.phone.trim(),
-        password: formData.password.trim(),
+        phone: formData.phone ? formData.phone.trim() : '',
+        password: formData.password,
       });
-      success(`Welcome to PizzaNest, ${data.user.name}! Your account is ready.`);
+      success(`Welcome to PizzaNest, ${data?.user?.name || 'Customer'}! Your account is ready.`);
       navigate('/dashboard');
     } catch (err) {
-      error(err.message);
+      error(err.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
