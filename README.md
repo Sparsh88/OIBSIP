@@ -42,6 +42,16 @@ The platform bridges a **Customer Ordering Portal** with a **Master Administrato
 - **Inventory Restock Management**: One-click restock buttons (`+10`, `+50`) and custom threshold alerts.
 - **Background Cron Alerts**: Automated `node-cron` low-stock background monitor with email notification triggers.
 
+### 🍕 Interactive Pizza Customization
+- [x] **Pizza base selection with at least 5 options**: Thin Crust, Classic Hand Tossed, Cheese Burst, Whole Wheat, Gluten Free.
+- [x] **Sauce selection with at least 5 options**: Classic Tomato, Spicy Arrabbiata, Garlic Sauce, BBQ Sauce, Pesto Sauce.
+- [x] **Cheese selection**: Mozzarella, Cheddar, Parmesan, Vegan Cheese, Smoked Gouda.
+- [x] **Multiple vegetable selection**: Multi-select toggle for Onion, Capsicum, Mushroom, Sweet Corn, Jalapeño, Black Olives, Tomato, etc.
+- [x] **Customized pizza added to cart**: Real-time price breakdown and custom item tags in shopping cart.
+- [x] **Customization saved with orders**: Full custom configuration persisted through checkout & MongoDB database.
+- [x] **Customization visible to users**: Detailed itemized slices on User Order History and Live Order Tracker.
+- [x] **Customization visible to admins**: Full kitchen breakdown on Admin Orders Pipeline & Order Details Modal.
+
 ---
 
 ## 🛠️ Technology Stack

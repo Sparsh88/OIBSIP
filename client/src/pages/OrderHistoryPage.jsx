@@ -107,22 +107,33 @@ export const OrderHistoryPage = () => {
                   {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                   {order.items?.map((item, idx) => (
-                    <span
+                    <div
                       key={idx}
                       style={{
                         fontSize: '0.8rem',
                         background: '#F9FAFB',
-                        padding: '0.25rem 0.65rem',
-                        borderRadius: 'var(--radius-sm)',
-                        color: '#4B5563',
+                        padding: '0.4rem 0.65rem',
+                        borderRadius: 'var(--radius-md)',
+                        color: '#374151',
                         border: '1px solid #E5E7EB',
                         fontWeight: '600',
                       }}
                     >
-                      {item.quantity}x {item.name}
-                    </span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontWeight: '800', color: '#1F2937' }}>{item.quantity}x {item.name}</span>
+                        <span style={{ fontSize: '0.78rem', color: 'var(--primary)', fontWeight: '800' }}>₹{item.totalPrice}</span>
+                      </div>
+                      <div style={{ fontSize: '0.73rem', color: '#6B7280', marginTop: '0.15rem' }}>
+                        <span>Base: <strong>{item.customBase}</strong> &bull; Sauce: <strong>{item.customSauce}</strong> &bull; Cheese: <strong>{item.customCheese}</strong></span>
+                        {item.customVeggies?.length > 0 && (
+                          <div style={{ color: '#166534', fontWeight: '700', marginTop: '0.1rem' }}>
+                            Veggies: {item.customVeggies.join(', ')}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>

@@ -197,11 +197,14 @@ export const AdminOrdersPage = () => {
                   </td>
 
                   <td style={{ padding: '1rem' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                       {order.items?.map((item, idx) => (
-                        <span key={idx} style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                          <strong>{item.quantity}x</strong> {item.name}
-                        </span>
+                        <div key={idx} style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                          <span style={{ color: '#fff', fontWeight: '800' }}>{item.quantity}x {item.name}</span>
+                          <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block' }}>
+                            {item.customBase} &bull; {item.customSauce} {item.customVeggies?.length > 0 ? `+ ${item.customVeggies.join(', ')}` : ''}
+                          </span>
+                        </div>
                       ))}
                     </div>
                   </td>

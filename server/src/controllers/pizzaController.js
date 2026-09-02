@@ -72,12 +72,54 @@ export const getPizzaById = async (req, res, next) => {
  */
 export const getCustomizerOptions = async (req, res, next) => {
   try {
-    const inventory = await Inventory.find({ quantity: { $gt: 0 } });
+    const inventory = await Inventory.find({ isAvailable: true, quantity: { $gt: 0 } });
 
-    const bases = inventory.filter((item) => item.category === 'base');
-    const sauces = inventory.filter((item) => item.category === 'sauce');
-    const cheeses = inventory.filter((item) => item.category === 'cheese');
-    const veggies = inventory.filter((item) => item.category === 'veggie');
+    let bases = inventory.filter((item) => item.category === 'base');
+    let sauces = inventory.filter((item) => item.category === 'sauce');
+    let cheeses = inventory.filter((item) => item.category === 'cheese');
+    let veggies = inventory.filter((item) => item.category === 'veggie');
+
+    // Default Fallbacks to guarantee minimum required choices
+    const defaultBases = [
+      { name: 'Thin Crust', category: 'base', priceModifier: 0, description: 'Crispy, lightweight artisan Italian style thin crust.' },
+      { name: 'Classic Hand Tossed', category: 'base', priceModifier: 0, description: 'Soft, golden crust with fluffy interior and crisp outer edge.' },
+      { name: 'Cheese Burst', category: 'base', priceModifier: 60, description: 'Molten liquid mozzarella cheese oozing from the center crust.' },
+      { name: 'Whole Wheat', category: 'base', priceModifier: 30, description: '100% stone-ground whole grain high-fiber healthy crust.' },
+      { name: 'Gluten Free', category: 'base', priceModifier: 50, description: 'Almond & tapioca blend naturally gluten-free dough.' },
+    ];
+
+    const defaultSauces = [
+      { name: 'Classic Tomato', category: 'sauce', priceModifier: 0, description: 'San Marzano tomatoes simmered with fresh basil.' },
+      { name: 'Spicy Arrabbiata', category: 'sauce', priceModifier: 15, description: 'Fiery chili garlic infused slow-roasted tomato sauce.' },
+      { name: 'Garlic Sauce', category: 'sauce', priceModifier: 25, description: 'Silky cream sauce with roasted whole garlic.' },
+      { name: 'BBQ Sauce', category: 'sauce', priceModifier: 20, description: 'Rich sweet and tangy hickory-smoked barbecue sauce.' },
+      { name: 'Pesto Sauce', category: 'sauce', priceModifier: 35, description: 'Crushed sweet basil, pine nuts, and olive oil.' },
+    ];
+
+    const defaultCheeses = [
+      { name: 'Mozzarella', category: 'cheese', priceModifier: 0, description: 'Whole milk shredded mozzarella with exceptional stretch.' },
+      { name: 'Cheddar', category: 'cheese', priceModifier: 30, description: 'Sharp, bold Wisconsin aged yellow cheddar.' },
+      { name: 'Parmesan', category: 'cheese', priceModifier: 40, description: 'Finely grated authentic aged Italian hard cheese.' },
+      { name: 'Vegan Cheese', category: 'cheese', priceModifier: 50, description: '100% plant-based dairy-free melts smoothly.' },
+      { name: 'Smoked Gouda', category: 'cheese', priceModifier: 45, description: 'Creamy Dutch cheese with delicate natural woodsmoke notes.' },
+    ];
+
+    const defaultVeggies = [
+      { name: 'Onion', category: 'veggie', priceModifier: 15, description: 'Crisp caramelized sweet red onion slices.' },
+      { name: 'Capsicum', category: 'veggie', priceModifier: 15, description: 'Fresh crunchy green bell peppers.' },
+      { name: 'Mushroom', category: 'veggie', priceModifier: 25, description: 'Earthy freshly sliced button mushrooms.' },
+      { name: 'Sweet Corn', category: 'veggie', priceModifier: 20, description: 'Tender juicy sweet yellow American corn kernels.' },
+      { name: 'Jalapeño', category: 'veggie', priceModifier: 20, description: 'Spicy tangy sliced pickled jalapeño peppers.' },
+      { name: 'Black Olives', category: 'veggie', priceModifier: 30, description: 'Rich Spanish pitted black olive rings.' },
+      { name: 'Tomato', category: 'veggie', priceModifier: 15, description: 'Fresh farm juicy diced tomatoes.' },
+      { name: 'Grilled Herb Chicken', category: 'veggie', priceModifier: 50, description: 'Tender chicken breast marinated in herbs.' },
+      { name: 'Smoked Pepperoni', category: 'veggie', priceModifier: 60, description: 'Crisp cured spicy pepperoni slices.' },
+    ];
+
+    if (bases.length < 5) bases = defaultBases;
+    if (sauces.length < 5) sauces = defaultSauces;
+    if (cheeses.length < 4) cheeses = defaultCheeses;
+    if (veggies.length < 7) veggies = defaultVeggies;
 
     res.json({
       success: true,

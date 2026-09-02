@@ -15,15 +15,15 @@ const orderItemSchema = new mongoose.Schema({
   },
   customBase: {
     type: String,
-    required: true,
+    default: 'Classic Hand Tossed',
   },
   customSauce: {
     type: String,
-    required: true,
+    default: 'Classic Tomato',
   },
   customCheese: {
     type: String,
-    required: true,
+    default: 'Mozzarella',
   },
   customVeggies: [
     {

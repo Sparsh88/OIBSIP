@@ -1,33 +1,122 @@
 import { getRazorpayInstance, verifyRazorpaySignature } from '../config/razorpay.js';
 import { Order } from '../models/Order.js';
 import { Inventory } from '../models/Inventory.js';
+import { Pizza } from '../models/Pizza.js';
 import { validateInventoryForOrder, deductInventoryForOrder } from '../services/inventoryService.js';
 import { emitNewOrderToAdmin, emitOrderStatusUpdate } from '../config/socket.js';
 
 /**
- * Helper to recalculate trusted server-side pricing with coupon discount support
+ * Helper to recalculate trusted server-side pricing with customization & coupon discount support
  */
 const calculateServerPricing = async (items, couponCode = '') => {
+  // Fetch all inventory items for price modifier calculations
+  const inventoryItems = await Inventory.find({});
+  const priceMap = {};
+  inventoryItems.forEach((inv) => {
+    priceMap[inv.name.toLowerCase()] = inv.priceModifier || 0;
+  });
+
+  // Default fallback modifier map
+  const defaultModifiers = {
+    'thin crust': 0,
+    'classic hand tossed': 0,
+    'cheese burst': 60,
+    'whole wheat': 30,
+    'gluten free': 50,
+    'classic tomato': 0,
+    'classic tomato basil': 0,
+    'spicy arrabbiata': 15,
+    'garlic sauce': 25,
+    'roasted garlic alfredo': 25,
+    'bbq sauce': 20,
+    'smoky bbq sauce': 20,
+    'pesto sauce': 35,
+    'basil pesto': 35,
+    'mozzarella': 0,
+    'cheddar': 30,
+    'aged cheddar': 30,
+    'parmesan': 40,
+    'parmesan reggiano': 40,
+    'vegan cheese': 50,
+    'vegan mozzarella': 50,
+    'smoked gouda': 45,
+    'onion': 15,
+    'red onion': 15,
+    'capsicum': 15,
+    'crisp capsicum': 15,
+    'mushroom': 25,
+    'button mushroom': 25,
+    'sweet corn': 20,
+    'sweet golden corn': 20,
+    'jalapeño': 20,
+    'pickled jalapeño': 20,
+    'black olives': 30,
+    'tomato': 15,
+    'fresh tomato': 15,
+    'grilled herb chicken': 50,
+    'smoked pepperoni': 60,
+    'spiced chicken sausage': 45,
+  };
+
+  const getModifier = (name) => {
+    if (!name) return 0;
+    const lower = name.toLowerCase().trim();
+    if (priceMap[lower] !== undefined) return priceMap[lower];
+    return defaultModifiers[lower] || 0;
+  };
+
   let subtotal = 0;
-  const processedItems = items.map((item) => {
-    let unitPrice = Number(item.unitPrice) || 299;
+  const processedItems = [];
+
+  for (const item of items) {
+    let basePrice = Number(item.basePrice);
+
+    if (item.pizza) {
+      try {
+        const dbPizza = await Pizza.findById(item.pizza);
+        if (dbPizza) {
+          basePrice = dbPizza.basePrice;
+        }
+      } catch (err) {
+        console.warn('Pizza lookup failed, using client price:', err.message);
+      }
+    }
+
+    if (isNaN(basePrice) || basePrice <= 0) {
+      basePrice = Number(item.unitPrice) || 299;
+    }
+
+    const customBase = item.customBase || 'Classic Hand Tossed';
+    const customSauce = item.customSauce || 'Classic Tomato';
+    const customCheese = item.customCheese || 'Mozzarella';
+    const customVeggies = Array.isArray(item.customVeggies) ? item.customVeggies : [];
+
+    // Calculate customization modifiers
+    const baseMod = getModifier(customBase);
+    const sauceMod = getModifier(customSauce);
+    const cheeseMod = getModifier(customCheese);
+    const veggieMod = customVeggies.reduce((sum, v) => sum + getModifier(v), 0);
+
+    const calculatedUnitPrice = basePrice + baseMod + sauceMod + cheeseMod + veggieMod;
+    // Use client unitPrice if it is higher than calculated (or if calculated was purely base price)
+    const unitPrice = Math.max(calculatedUnitPrice, Number(item.unitPrice) || calculatedUnitPrice);
     const qty = Math.max(1, Number(item.quantity) || 1);
     const totalPrice = unitPrice * qty;
     subtotal += totalPrice;
 
-    return {
+    processedItems.push({
       pizza: item.pizza || null,
-      name: item.name || 'Gourmet Pizza',
+      name: item.name || 'Customized Pizza',
       image: item.image || 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop&q=80',
-      customBase: item.customBase || 'Original Crust',
-      customSauce: item.customSauce || 'Classic Tomato Basil',
-      customCheese: item.customCheese || 'Mozzarella',
-      customVeggies: item.customVeggies || [],
+      customBase,
+      customSauce,
+      customCheese,
+      customVeggies,
       quantity: qty,
       unitPrice,
       totalPrice,
-    };
-  });
+    });
+  }
 
   // Calculate Coupon Discount
   let discount = 0;

@@ -152,14 +152,29 @@ export const CartPage = () => {
                   <h4 style={{ fontSize: '1.1rem', fontWeight: '800', color: '#1F2937', marginBottom: '0.35rem' }}>
                     {item.name}
                   </h4>
-                  <div style={{ fontSize: '0.8rem', color: '#6B7280', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    <span style={{ background: '#F3F4F6', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: '700' }}>
-                      {item.customBase}
-                    </span>
-                    {item.customCheese && (
-                      <span style={{ background: '#F3F4F6', padding: '0.15rem 0.5rem', borderRadius: '4px' }}>
-                        {item.customCheese}
-                      </span>
+                  <div style={{ fontSize: '0.8rem', color: '#6B7280', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', alignItems: 'center' }}>
+                      {item.customBase && (
+                        <span style={{ background: '#F3F4F6', color: '#374151', padding: '0.15rem 0.5rem', borderRadius: '6px', fontWeight: '700' }}>
+                          Base: {item.customBase}
+                        </span>
+                      )}
+                      {item.customSauce && (
+                        <span style={{ background: '#FFF7ED', color: '#C2410C', padding: '0.15rem 0.5rem', borderRadius: '6px', fontWeight: '700' }}>
+                          Sauce: {item.customSauce}
+                        </span>
+                      )}
+                      {item.customCheese && (
+                        <span style={{ background: '#FEF3C7', color: '#B45309', padding: '0.15rem 0.5rem', borderRadius: '6px', fontWeight: '700' }}>
+                          Cheese: {item.customCheese}
+                        </span>
+                      )}
+                    </div>
+
+                    {Array.isArray(item.customVeggies) && item.customVeggies.length > 0 && (
+                      <div style={{ fontSize: '0.78rem', color: '#166534', fontWeight: '700' }}>
+                        + Veggies: {item.customVeggies.join(', ')}
+                      </div>
                     )}
                   </div>
                   <span

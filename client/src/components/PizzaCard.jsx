@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, Info, ChevronDown, User, Users } from 'lucide-react';
+import { Heart, Info, ChevronDown, User, Users, Sliders } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
+import { PizzaCustomizerModal } from './PizzaCustomizerModal';
 
 export const PizzaCard = ({ pizza }) => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export const PizzaCard = ({ pizza }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [selectedSize, setSelectedSize] = useState('Large');
   const [selectedCrust, setSelectedCrust] = useState('Original Crust');
+  const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
 
   const isExtra = pizza.category === 'Extras';
   const isDessert = pizza.category === 'Desserts';
@@ -341,7 +343,7 @@ export const PizzaCard = ({ pizza }) => {
           </div>
         )}
 
-        {/* 3. BOTTOM PRICE & DEEP FOREST GREEN ADD TO CART BUTTON */}
+        {/* 3. BOTTOM PRICE & ACTION BUTTONS */}
         <div
           style={{
             display: 'flex',
@@ -350,12 +352,13 @@ export const PizzaCard = ({ pizza }) => {
             marginTop: 'auto',
             paddingTop: '0.75rem',
             borderTop: '1px solid #F3F4F6',
+            gap: '0.5rem',
           }}
         >
           <span
             style={{
               fontFamily: '"Outfit", sans-serif',
-              fontSize: '1.25rem',
+              fontSize: '1.2rem',
               fontWeight: '900',
               color: '#1F2937',
             }}
@@ -363,33 +366,77 @@ export const PizzaCard = ({ pizza }) => {
             ₹ {currentPrice.toFixed(2)}
           </span>
 
-          <button
-            onClick={handleQuickAdd}
-            style={{
-              background: '#1E3F20',
-              color: '#FFFFFF',
-              border: 'none',
-              borderRadius: 'var(--radius-full)',
-              padding: '0.5rem 1.35rem',
-              fontSize: '0.88rem',
-              fontWeight: '900',
-              cursor: 'pointer',
-              boxShadow: '0 2px 8px rgba(30, 63, 32, 0.25)',
-              transition: 'all 0.2s',
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = '#152C16';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.background = '#1E3F20';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            Add To Cart
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            {isPurePizza && (
+              <button
+                onClick={() => setIsCustomizerOpen(true)}
+                style={{
+                  background: '#F3F4F6',
+                  color: '#1E3F20',
+                  border: '1px solid #D1D5DB',
+                  borderRadius: 'var(--radius-full)',
+                  padding: '0.48rem 0.85rem',
+                  fontSize: '0.8rem',
+                  fontWeight: '800',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  transition: 'all 0.2s',
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.background = '#E5E7EB';
+                  e.currentTarget.style.borderColor = '#9CA3AF';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.background = '#F3F4F6';
+                  e.currentTarget.style.borderColor = '#D1D5DB';
+                }}
+                title="Customize Base, Sauce, Cheese & Veggies"
+              >
+                <Sliders size={13} color="#1E3F20" />
+                <span>Customize 🍕</span>
+              </button>
+            )}
+
+            <button
+              onClick={handleQuickAdd}
+              style={{
+                background: '#1E3F20',
+                color: '#FFFFFF',
+                border: 'none',
+                borderRadius: 'var(--radius-full)',
+                padding: '0.5rem 1.1rem',
+                fontSize: '0.82rem',
+                fontWeight: '900',
+                cursor: 'pointer',
+                boxShadow: '0 2px 8px rgba(30, 63, 32, 0.25)',
+                transition: 'all 0.2s',
+                whiteSpace: 'nowrap',
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = '#152C16';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background = '#1E3F20';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              Add To Cart
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* PIZZA CUSTOMIZATION MODAL */}
+      {isPurePizza && (
+        <PizzaCustomizerModal
+          isOpen={isCustomizerOpen}
+          onClose={() => setIsCustomizerOpen(false)}
+          pizza={pizza}
+        />
+      )}
     </div>
   );
 };
