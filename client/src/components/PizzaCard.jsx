@@ -244,106 +244,52 @@ export const PizzaCard = ({ pizza }) => {
           {pizza.description}
         </p>
 
-        {/* TWO SIDE-BY-SIDE DROPDOWNS: (Select Size & Select Crust) */}
+        {/* SELECT SIZE DROPDOWN */}
         {isPurePizza && (
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '0.5rem',
-              marginBottom: '1rem',
-            }}
-          >
-            {/* Select Size Dropdown */}
-            <div>
-              <label
+          <div style={{ marginBottom: '1rem' }}>
+            <label
+              style={{
+                fontSize: '0.72rem',
+                fontWeight: '700',
+                color: '#6B7280',
+                display: 'block',
+                marginBottom: '0.2rem',
+              }}
+            >
+              Select Portion Size
+            </label>
+            <div style={{ position: 'relative' }}>
+              <select
+                value={selectedSize}
+                onChange={(e) => setSelectedSize(e.target.value)}
                 style={{
-                  fontSize: '0.7rem',
+                  width: '100%',
+                  padding: '0.45rem 0.65rem',
+                  fontSize: '0.82rem',
                   fontWeight: '700',
-                  color: '#6B7280',
-                  display: 'block',
-                  marginBottom: '0.2rem',
+                  borderRadius: '8px',
+                  border: '1px solid #D1D5DB',
+                  background: '#FFFFFF',
+                  color: '#1F2937',
+                  appearance: 'none',
+                  cursor: 'pointer',
+                  outline: 'none',
                 }}
               >
-                Select Size
-              </label>
-              <div style={{ position: 'relative' }}>
-                <select
-                  value={selectedSize}
-                  onChange={(e) => setSelectedSize(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '0.4rem 0.5rem',
-                    fontSize: '0.8rem',
-                    fontWeight: '700',
-                    borderRadius: '6px',
-                    border: '1px solid #D1D5DB',
-                    background: '#FFFFFF',
-                    color: '#1F2937',
-                    appearance: 'none',
-                    cursor: 'pointer',
-                    outline: 'none',
-                  }}
-                >
-                  <option value="Regular">Regular</option>
-                  <option value="Medium">Medium</option>
-                  <option value="Large">Large</option>
-                </select>
-                <ChevronDown
-                  size={13}
-                  color="#6B7280"
-                  style={{ position: 'absolute', right: '6px', top: '9px', pointerEvents: 'none' }}
-                />
-              </div>
-            </div>
-
-            {/* Select Crust Dropdown */}
-            <div>
-              <label
-                style={{
-                  fontSize: '0.7rem',
-                  fontWeight: '700',
-                  color: '#6B7280',
-                  display: 'block',
-                  marginBottom: '0.2rem',
-                }}
-              >
-                Select Crust
-              </label>
-              <div style={{ position: 'relative' }}>
-                <select
-                  value={selectedCrust}
-                  onChange={(e) => setSelectedCrust(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '0.4rem 0.5rem',
-                    fontSize: '0.8rem',
-                    fontWeight: '700',
-                    borderRadius: '6px',
-                    border: '1px solid #D1D5DB',
-                    background: '#FFFFFF',
-                    color: '#1F2937',
-                    appearance: 'none',
-                    cursor: 'pointer',
-                    outline: 'none',
-                  }}
-                >
-                  <option value="Original Crust">Original Crust</option>
-                  <option value="Thin Crust">Thin Crust</option>
-                  <option value="Cheese Burst">Cheese Burst</option>
-                  <option value="Whole Wheat">Whole Wheat</option>
-                </select>
-                <ChevronDown
-                  size={13}
-                  color="#6B7280"
-                  style={{ position: 'absolute', right: '6px', top: '9px', pointerEvents: 'none' }}
-                />
-              </div>
+                <option value="Regular">Regular Portion (Serves 1)</option>
+                <option value="Medium">Medium Portion (Serves 2)</option>
+                <option value="Large">Large Party Portion (Serves 3-4)</option>
+              </select>
+              <ChevronDown
+                size={14}
+                color="#6B7280"
+                style={{ position: 'absolute', right: '10px', top: '10px', pointerEvents: 'none' }}
+              />
             </div>
           </div>
         )}
 
-        {/* 3. BOTTOM PRICE & ACTION BUTTONS */}
+        {/* 3. BOTTOM PRICE & CLEAN ACTION BUTTONS */}
         <div
           style={{
             display: 'flex',
@@ -358,7 +304,7 @@ export const PizzaCard = ({ pizza }) => {
           <span
             style={{
               fontFamily: '"Outfit", sans-serif',
-              fontSize: '1.2rem',
+              fontSize: '1.25rem',
               fontWeight: '900',
               color: '#1F2937',
             }}
@@ -369,14 +315,14 @@ export const PizzaCard = ({ pizza }) => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             {isPurePizza && (
               <button
-                onClick={() => setIsCustomizerOpen(true)}
+                onClick={() => navigate(`/customize/${pizza._id}`)}
                 style={{
                   background: '#F3F4F6',
                   color: '#1E3F20',
-                  border: '1px solid #D1D5DB',
+                  border: '1.5px solid #D1D5DB',
                   borderRadius: 'var(--radius-full)',
-                  padding: '0.48rem 0.85rem',
-                  fontSize: '0.8rem',
+                  padding: '0.48rem 0.9rem',
+                  fontSize: '0.82rem',
                   fontWeight: '800',
                   cursor: 'pointer',
                   display: 'flex',
@@ -392,9 +338,9 @@ export const PizzaCard = ({ pizza }) => {
                   e.currentTarget.style.background = '#F3F4F6';
                   e.currentTarget.style.borderColor = '#D1D5DB';
                 }}
-                title="Customize Base, Sauce, Cheese & Veggies"
+                title="Customize Crust Base, Sauce, Cheese & Veggies"
               >
-                <Sliders size={13} color="#1E3F20" />
+                <Sliders size={14} color="#1E3F20" />
                 <span>Customize 🍕</span>
               </button>
             )}
@@ -406,7 +352,7 @@ export const PizzaCard = ({ pizza }) => {
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: 'var(--radius-full)',
-                padding: '0.5rem 1.1rem',
+                padding: '0.5rem 1.15rem',
                 fontSize: '0.82rem',
                 fontWeight: '900',
                 cursor: 'pointer',
@@ -428,15 +374,6 @@ export const PizzaCard = ({ pizza }) => {
           </div>
         </div>
       </div>
-
-      {/* PIZZA CUSTOMIZATION MODAL */}
-      {isPurePizza && (
-        <PizzaCustomizerModal
-          isOpen={isCustomizerOpen}
-          onClose={() => setIsCustomizerOpen(false)}
-          pizza={pizza}
-        />
-      )}
     </div>
   );
 };

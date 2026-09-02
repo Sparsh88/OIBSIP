@@ -12,6 +12,7 @@ import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { CustomizationPage } from './pages/CustomizationPage';
 import { CartPage } from './pages/CartPage';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { OrderTrackingPage } from './pages/OrderTrackingPage';
@@ -48,6 +49,7 @@ const AppLayout = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/customize/:id" element={<CustomizationPage />} />
           <Route path="/customize" element={<Navigate to="/dashboard" replace />} />
           <Route path="/cart" element={<CartPage />} />
 
