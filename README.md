@@ -166,7 +166,7 @@ erDiagram
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/Sparsh88/OIBSIP.git
-cd OIBSIP
+cd OIBSIP/WebDev-L3-PizzaDelivery
 ```
 
 ### 2. Configure Environment Variables
@@ -196,6 +196,9 @@ VITE_API_URL=http://localhost:5000/api
 
 ### 3. Install Dependencies & Seed Database
 ```bash
+# Navigate to project folder
+cd WebDev-L3-PizzaDelivery
+
 # Install root, server, and client dependencies
 npm run install-all
 
@@ -206,11 +209,11 @@ npm run seed
 ### 4. Start Development Servers
 ```bash
 # Terminal 1 — Start Backend Server (Port 5000)
-cd server
+cd WebDev-L3-PizzaDelivery/server
 npm run dev
 
 # Terminal 2 — Start Frontend Client (Port 5173)
-cd client
+cd WebDev-L3-PizzaDelivery/client
 npm run dev
 ```
 
