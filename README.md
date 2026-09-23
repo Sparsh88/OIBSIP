@@ -11,7 +11,7 @@
 
 ## 🌐 Live Deployments & Repository Links
 
-- **🚀 Live Frontend Web App (Vercel)**: [https://oibsip-client.vercel.app](https://oibsip-client.vercel.app) *(or your Vercel deployment link)*
+- **🚀 Live Frontend Web App (Vercel)**: [https://pizzanest.vercel.app/](https://pizzanest.vercel.app/)
 - **⚡ Live Backend API Service (Render)**: [https://oibsip-hirj.onrender.com/api](https://oibsip-hirj.onrender.com/api)
 - **💻 GitHub Repository**: [https://github.com/Sparsh88/OIBSIP](https://github.com/Sparsh88/OIBSIP)
 
