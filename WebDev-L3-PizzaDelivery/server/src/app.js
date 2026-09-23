@@ -77,7 +77,16 @@ app.use('/api/auth/login', authLimiter);
 app.use('/api/auth/register', authLimiter);
 app.use('/api/admin/login', authLimiter);
 
-// API Health Check
+// API Health & Root Check
+app.get(['/', '/api'], (req, res) => {
+  res.json({
+    success: true,
+    message: '🍕 PizzaNest API Server is running successfully!',
+    health: '/api/health',
+    documentation: 'https://github.com/Sparsh88/OIBSIP#readme',
+  });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
